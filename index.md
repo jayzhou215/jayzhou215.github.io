@@ -1,2 +1,2 @@
 ---
-clean all
+- [go_study](./go_study/index.md)
