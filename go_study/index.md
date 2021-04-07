@@ -1,11 +1,4 @@
-```go
-package main
+## 前言
+记录自己的Go语言学习心得
 
-import (
-    "fmt"
-)
-
-func main() {
-    fmt.Printf("hello world~")
-}
-```
+1. 按照[官方教程](https://tour.go-zh.org/welcome/1)学习一遍
