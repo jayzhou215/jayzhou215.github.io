@@ -2,3 +2,4 @@
 ---
 
 - [go_study](./go_study/index.md)
+- [mysql_study](./mysql_study/index.md)
