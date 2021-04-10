@@ -95,4 +95,40 @@ func main() {
 8. 切片并不存储任何数据，只是描述了底层数组中的一段。
     1. 更改切片会修改底层数组中对应的元素。
     2. 与他共享底层数组的切片都会观测到这些修改。
-9. 
+9. 数组语法vs切片语法 `[3]bool{true, true, false}` vs `[]bool{true, true, false}`
+10. 切片默认行为 `var a [10]int` `a[:10]` `a[0:]` `a[0:10]` `a[:]`
+11. 切片的长度和容量
+    1. 长度就是它所包含的元素个数。
+    2. 容量是从它的第一个元素开始数，到其底层数组元素末尾的个数。
+    3. 切片的上界不能超过切片容量
+12. 切片的零值
+    1. 切片的零值是nil
+    2. 零值切片`var a []int`的`len(a) = 0` `cap(a) = 0`
+13. 用make创建切片
+    1. `a := make([]int, 5)`  // len(a)=5
+    2. `b := make([]int, 0, 5)` // len(b)=0, cap(b)=5
+    3. `b = b[:cap(b)]` // len(b)=5, cap(b)=5
+    4. `b = b[1:]`      // len(b)=4, cap(b)=4
+14. 切片的切片
+    1. 切片可包含任何类型，甚至包括其它的切片。
+15. 向切片追加元素
+    1. `func append(s []T, vs ...T) []T
+`   2. append中的切片可以是nil
+    3. 接收返回值作为变更后的切片
+    4. append过程中，内部会自动扩充底层数组
+    5. `slice = append(slice, elem1, elem2)`
+    6. `slice = append(slice, anotherSlice...)`
+    7. `slice = append([]byte("hello "), "world"...)`
+    8. [引申阅读](https://blog.go-zh.org/go-slices-usage-and-internals)
+16. Range
+    1. for 循环的 range 形式可遍历切片或映射。
+    2. 当使用 for 循环遍历切片时，每次迭代都会返回两个值。
+    3. 第一个值为当前元素的下标，第二个值为该下标所对应元素的一份**副本**。
+    4. 指定切片类型为struct的指针类型，来避免struct本身的copy
+17. Range(续)
+    1. `for i, _ := range pow`
+    2. `for _, value := range pow`
+    3. `for i := range pow`
+18. slice exercise
+    1. range 必须跟随可遍历的对象
+    2. slice_exercise.html 里面可以渲染执行的结果        
