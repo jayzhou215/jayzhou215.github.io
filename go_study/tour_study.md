@@ -170,4 +170,8 @@ func main() {
     1. go的function也可以是一种闭包
     2. 闭包是一个function值，在他的方法体外引用变量
     3. 疑问: 闭包的使用场景是什么
+        1. https://www.calhoun.io/5-useful-ways-to-use-closures-in-go/
+            1. fibgen
+                1. 斐波那契数列生成，持有f1, f2, 又动态变更其值
+            2. 
     
