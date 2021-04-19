@@ -3,8 +3,8 @@
 1. 第一个Hello, world ~~ 
   * 右侧的编辑器支持语法高亮
 2. Go本地化，尝试挑战下英文
-3. Go offline
-  * `go get golang.org/x/tour` 执行完之后， 直接敲 `tour`，会在浏览器打开http://127.0.0.1:3999/welcome/1
+3. 离线执行该教程
+  * 在命令行将 `go get golang.org/x/tour` 执行完之后， 直接敲 `tour`，会在浏览器打开http://127.0.0.1:3999/welcome/1
   * [go get命令](http://c.biancheng.net/view/123.html) 
 #### 包、变量、函数
 1. 包名是路径的最后一个元素
@@ -69,21 +69,21 @@ func main() {
     4. `fmt.Println(*p)` // 取值
     5. `*p = 21` // 设值
 2. 结构体，就是一组字段
-```go
-package main
-
-import "fmt"
-
-type Vertx struct {
-    X int
-    Y int
-}
-
-func main() {
-    fmt.Println(Vertx{1, 2})
-}
-
-```
+    ```go
+    package main
+    
+    import "fmt"
+    
+    type Vertx struct {
+        X int
+        Y int
+    }
+    
+    func main() {
+        fmt.Println(Vertx{1, 2})
+    }
+    
+    ```
 3. 取值用点号 `vertx.X = 4`
 4. 结构体指针，`(*p).X`  `p.X` 第二种进行了隐式引用
 5. 结构体文法，直接列出值来新分配一个结构体 `v1 = Vertx{1, 2}`
@@ -130,5 +130,44 @@ func main() {
     2. `for _, value := range pow`
     3. `for i := range pow`
 18. slice exercise
-    1. range 必须跟随可遍历的对象
-    2. slice_exercise.html 里面可以渲染执行的结果        
+    1. slice的构造方式有两种，一种是make，一种是声明后append()
+    2. 计算结果需要做类型转换
+19. Map
+    1. 使用make初始化 `make(map[string]Vertex)`
+    2. key value存储
+20. Map初始化
+    ```go
+    var m = map[string]Vertex{
+        "Bell Labs": Vertex{
+            40.68433, -74.39967,
+        },
+        "Google": Vertex{
+            37.42202, -122.08408,
+        },
+    }
+    ```
+21. Map初始化续 子类型可以忽略
+    ```go
+    var m = map[string]Vertex{
+        "Bell Labs": {40.68433, -74.39967},
+        "Google":    {37.42202, -122.08408},
+    }
+    ``` 
+22. 操作Map
+    ```go
+    m[key] = elem // 增更
+    elem = m[key] // 取值
+    delete(m, key) // 删除
+    elem, ok := m[key] // 测试一个key是否已经存在
+    ```
+23. Map练习
+    1. string直接遍历时取出的是rune
+    2. 句中的空格分隔符可能出现在开始、中间、末尾
+24. function类型的值
+    1. function也是一种值类型，可以被传递
+    2. 可以作为方法入参，也可以作为返回值
+25. function闭包
+    1. go的function也可以是一种闭包
+    2. 闭包是一个function值，在他的方法体外引用变量
+    3. 疑问: 闭包的使用场景是什么
+    
