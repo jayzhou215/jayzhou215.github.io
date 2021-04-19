@@ -173,5 +173,5 @@ func main() {
         1. https://www.calhoun.io/5-useful-ways-to-use-closures-in-go/
             1. fibgen
                 1. 斐波那契数列生成，持有f1, f2, 又动态变更其值
-            2. 
+            2. maze，想到一道面试题，用闭包来实现很简单，需求是按逆时针向内在一个二维数组中找到第n个数
     
