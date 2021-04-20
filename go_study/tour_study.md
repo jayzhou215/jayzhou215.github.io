@@ -174,7 +174,8 @@ func main() {
             1. isolate data
                 1. fibgen
                     1. 斐波那契数列生成，持有f1, f2, 又动态变更其值
-                2. maze，想到一道面试题，用闭包来实现很简单，需求是按逆时针向内在一个二维数组中找到第n个数
+                2. maze，想到一道面试题，用闭包来实现很简单，需求是在一个二维数组中按顺时针由外环向内环找到第n个数
+                3. 这种使用场景和带有成员变量的类很像，当然在go里面是一个struct，自带function
             2. Wrapping functions and creating middleware
                 1. timed middle ware
             3. Accessing data that typically isn’t available
@@ -182,7 +183,40 @@ func main() {
             4. Binary searching with the sort package
                 1. `sort.SearchInts()`使用闭包
                 2. todo 对sort package中提供的各种排序、搜索算法进行梳理学习
-            5. 
-
-                
+            5. Deferring work 推迟执行
+            ```go
+            go func() {
+             result := doWork1(a, b)
+             result = doWork2(result)
+             result = doWork3(result)
+             // Use the final result
+           }()
+           fmt.Println("hi!")
+            ```
+#### Methods and Interfaces
+1. Methods
+    1. Go不存在class，但是可以在类型上定义func
+    2. 一个 Method 是一个带有特定receiver的function
+    3. receiver出现在func关键字和method name之间
+2. 一个Method只是一个带有receiver参数的function，可以将receiver参数写到参数列表中
+3. 也可以在非struct类型上声明method
+    1. 只能在同一个包为一个类型声明带receiver的method
+4. 指针receiver
+    1. 可以声明指针 receiver的method
+    2. receiver类型是星语法
+    3. 指针 receiver比值 receiver更常用，因为经常需要在method里面修改 receiver
+    4. 值receiver是receiver的一个copy，修改值receiver并不修改原始值
+5. 指针和方法
+    1. 对比值引用和指针引用的区别
+6. Method和指针的间接引用
+    1. 类型是方法入参时，如类型是指针类型，调用时所传入参必须是指针类型。
+    2. 类型是receiver参数时，method的receiver类型是指针类型时，调用时receiver类型是值类型或者指针类型都可以，Go语言内部会做转换
+7. 反之亦然
+    1. 类型是方法入参时，如类型是值类型，调用时所传入参必须是值类型。                
+    2. 类型是receiver参数时，method的receiver类型是值类型时，调用时receiver类型是值类型或者指针类型都可以，Go语言内部会做转换
+8. 选择值还是指针receiver
+    1. 有两个原因选择指针receiver
+        1. method可以修改指针receiver所指向的值
+        2. 避免在method调用时的值copy，这在receiver所指向的struct是个大对象时会很有用
+    2. 一般不会混用值或者指针receiver
     
