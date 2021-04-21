@@ -160,7 +160,7 @@ func main() {
     delete(m, key) // 删除
     elem, ok := m[key] // 测试一个key是否已经存在
     ```
-23. Map练习
+23. [Map练习](./wordcount/main.go)
     1. string直接遍历时取出的是rune
     2. 句中的空格分隔符可能出现在开始、中间、末尾
 24. function类型的值
@@ -172,15 +172,15 @@ func main() {
     3. 疑问: 闭包的使用场景是什么
         1. https://www.calhoun.io/5-useful-ways-to-use-closures-in-go/
             1. isolate data
-                1. fibgen
+                1. [fibgen](./functionclosures/fibgen.go)
                     1. 斐波那契数列生成，持有f1, f2, 又动态变更其值
-                2. maze，想到一道面试题，用闭包来实现很简单，需求是在一个二维数组中按顺时针由外环向内环找到第n个数
+                2. [maze](./functionclosures/maze.go)，想到一道面试题，用闭包来实现很简单，需求是在一个二维数组中按顺时针由外环向内环找到第n个数
                 3. 这种使用场景和带有成员变量的类很像，当然在go里面是一个struct，自带function
             2. Wrapping functions and creating middleware
-                1. timed middle ware
+                1. [timed middle ware](./functionclosures/timedmiddleware.go)
             3. Accessing data that typically isn’t available
-                1. 处于对数据保护的考虑，不想向外暴露特定字段时使用
-            4. Binary searching with the sort package
+                1. [处于对数据保护的考虑，不想向外暴露特定字段时使用](./functionclosures/varprotection.go)
+            4. [Binary searching with the sort package](./functionclosures/search.go)
                 1. `sort.SearchInts()`使用闭包
                 2. todo 对sort package中提供的各种排序、搜索算法进行梳理学习
             5. Deferring work 推迟执行
@@ -219,4 +219,19 @@ func main() {
         1. method可以修改指针receiver所指向的值
         2. 避免在method调用时的值copy，这在receiver所指向的struct是个大对象时会很有用
     2. 一般不会混用值或者指针receiver
+9. interface
+    1. 一个interface类型定义是一组method的签名(方法名称，入参、出参类型，并不包含func关键字)
+    2. 一个interface类型的值可以持有任何实现了那些method的值
+    3. interface的值必须是指针类型，而不允许是值类型，这里没有隐式转换
+10. interface是被隐式实现
+    1. 实现interface无需显示声明，没有`impletement`关键字
+    2. 隐式interface连接interface定义及其实现，可以无需其他预先的设置就可以在package的任何地方使用
+11. interface values
+    1. 实际上，interface values可以被认为是一个tuple，由值和具体类型`value type`
+    2. interface value持有一个特定底层具体类型的value
+    3. 调用一个基于一个interface的value的method是执行基于它的底层类型的同名method
+12. 底层是nil value的interface values
+    1. 如果在interface内部的具体值是nil，这个method会通过一个nil receiver被调用
+    2. 在某些语言这会触发一个空指针异常，但是在Go，写method的时候很友善的处理被一个nil receiver调用的情况的是很常见的
+    3. 注意，[一个持有nil的实际值的interface值本身是非nil的](./interfaces/main.go)
     
