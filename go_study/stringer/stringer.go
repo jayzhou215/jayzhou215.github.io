@@ -8,11 +8,11 @@ import (
 type IPAddr [4]byte
 
 func (ip *IPAddr) String() string {
-	var ipByteStrs []string
-	for _, bytee := range ip {
-		ipByteStrs = append(ipByteStrs, fmt.Sprintf("%v", bytee))
+	var ipByteStrList []string
+	for _, ipByte := range ip {
+		ipByteStrList = append(ipByteStrList, fmt.Sprintf("%v", ipByte))
 	}
-	return strings.Join(ipByteStrs, ".")
+	return strings.Join(ipByteStrList, ".")
 }
 
 type Data struct {
