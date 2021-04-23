@@ -20,16 +20,16 @@ func (t *T) Abs(a int) int {
 func main() {
 	var a A
 	if a == nil {
-		fmt.Println("a is nil")
+		fmt.Printf("a is nil %v %T\n", a, a)
 	}
 	var b *T
 	if b == nil {
-		fmt.Println("b is nil")
+		fmt.Printf("b is nil %v %T\n", b, b)
 	}
 	a = b
 	if a == nil {
 		fmt.Println("a hold b is nil")
 	} else {
-		fmt.Println("a hold b is non nil")
+		fmt.Printf("a hold b is non nil %v %T\n", a, a)
 	}
 }

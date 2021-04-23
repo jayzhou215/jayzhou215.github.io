@@ -234,4 +234,44 @@ func main() {
     1. 如果在interface内部的具体值是nil，这个method会通过一个nil receiver被调用
     2. 在某些语言这会触发一个空指针异常，但是在Go，写method的时候很友善的处理被一个nil receiver调用的情况的是很常见的
     3. 注意，[一个持有nil的实际值的interface值本身是非nil的](./interfaces/main.go)
-    
+13. [nil interface values](./interfaces/nilinerface.go)
+    1. 一个nil interface value既不持有值也不持有其具体类型
+    2. 在一个nil interface上调用一个method会触发一个运行时异常，因为在interface tuple中没有类型，其来指明调用哪个具体的method
+14. [empty interface](./interfaces/emptyinterface.go)
+    1. 指定0个methods的 interface类型被称为 empty interface
+    2. 一个空的empty interface可以持有任何类型的值
+    3. 空interface 被那些处理未知类型的代码使用。比如`fmt.Print()`接收任何数量的`interface{}`类型    
+15. 类型断言
+    1. 一个类型断言提供一个interface 值的底层具体值的入口
+    2. `t = i.(T)` 这种声明断言interface i持有具体的类型 T，并将底层的类型T赋给变量t
+    3. 如果i并不持有类型T，这个语句会触发panic
+    4. `t, ok = i.(T)`为了测试一个interface value是否持有特定类型T，一个类型断言可以返回两个值，具体类型值和一个报告断言是否成功的bool值
+    5. 如果i持有T，t是T的具体类型值，ok是true，反之，t是T的零值，ok是false，并且没有panic
+    6. 注意和从map中取值的语法相似性
+16. type switch
+    1. 一个type switch是一个允许多个有序类型断言的结构
+    2. 一个type switch像一个普通的switch语句，但是在一个type switch的cases指定的是type而不是value，并且这些values和给定的interface所持有的类型进行比较
+    3. 一个type switch的声明与一个类型断言`v = i.(T)`有相同语法，但是特定类型T被关键字`type`替换
+    4. i持有类型T或S，在各个T/S的case语句中，变量v持有对应的T或S类型，且持有变量i所持有的value，在default case中v持有和i相同的value和type
+17. Stringers
+    1. 最普遍的interface就是在fmt包中定义的Stringers interface
+    2. Stringers是一个将自己描述为一个字符串的类型。fmt包寻找这个interface来打印值
+18. Stringers exercise
+    1. 实现String() string方法
+    2. 注意fmt.Printf()这里没有隐式转换，示例中的打印的ip类型是IPAddr，则会去找receiver类型为值的String()方法。原因是底层使用的switch type方式去判断类型
+    3. 换句话说，实现了String()方法之后，还需要注意在fmt中传值的类型和String()方法定义的receiver类型一致
+    ```
+    switch v := p.arg.(type) {
+    case error:
+        handled = true
+        defer p.catchPanic(p.arg, verb, "Error")
+        p.fmtString(v.Error(), verb)
+        return
+
+    case Stringer:
+        handled = true
+        defer p.catchPanic(p.arg, verb, "String")
+        p.fmtString(v.String(), verb)
+        return
+    }
+    ```
