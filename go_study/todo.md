@@ -6,3 +6,4 @@
     2. function中入参是interface{}时，入参的是值类型或指针类型均可(why?)
     3. 变量类型是interface时，给该变量赋值时也必须传指针类型，此处不会有隐式转换
 5. 2. Go中提供的基础包 files, network connections, compressor, cipher等代码阅读
+6. 二叉树相关知识复习

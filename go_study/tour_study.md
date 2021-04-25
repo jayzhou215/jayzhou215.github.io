@@ -308,3 +308,58 @@ func main() {
     1. 三个methods的interface
 25. [Image exercise](./interfaces/images.go)
     1. can try `(x+y)/2, x*y, and x^y` here, like in [slice exercise](http://127.0.0.1:3999/moretypes/18)
+
+#### Concurrency
+1. Goroutines
+    1. 一个go routine是一个被Go运行时管理的轻量级线程
+    2. `go f(x, y, z)` 开始一个运行中的goroutine
+    3. x,y,z的赋值在当前线程，f的执行在新的线程中
+    4. Go routine运行在相同的地址空间中，所以对共享内存的处理必须是同步的
+    5. sync包提供了有用的原始工具，尽管你不会需要这些，因为有其他的工具。
+2. Channels
+    1. channel是一个特定类型的管道，通过它，你可以收发value，通过channel operator `<-`
+    2. 像map, slice，channel需要先创建再使用 `ch := make(chan int)`
+    3. `ch <- value` 将value传递给channel， `v := <- ch` 从channel中取值并传递给变量v，按照箭头方向的数据流
+    4. 默认情况，senders和receivers会block，直到另一侧ready。这种特性，允许协程同步而无需直观锁或者条件变量
+    5. example中
+        1. goroutine中赋值，在主线程中取值
+        2. ch被两个线程赋值，在主线程中取值了两次，这意味着在不同goroutine可以考虑使用同一个channel // surprise me
+3. Buffered Channels
+    1. Channels 可以被 buffered，在make方法的第二个参数中提供 buffered length用`make`来初始化一个buffered channel
+    2. 发送一个buffered channel仅当channel是满的时候会block。当buffer是空的时候，接收者会block。
+    3. 修改示例装满buffer来看会发生什么
+        1. [`ch := make(chan int)`的行为](./concurrency_study/channel1.go)和[`ch := make(chan int, 1)`的行为](./concurrency_study/channel2.go)是不一致的
+        2. 前者，在同一线程中，一旦执行收/发即会lock，需要在其他线程执行相反动作来unlock
+        2. 后者，需要超过声明中的数量，才会lock
+4. Range and Close
+    1. 一个sender可以`close`一个channel来指示没有更多的值会被发送。接收者在接收者表达式中通过分配第二个参数来测试一个channel是否被关闭，`v, ok := <- ch`
+    2. 当没有更多值接收并且channel被关闭时，`ok`值是`false`
+    3. loop `for i := range c` 会从channel里面重复的接收value直到它关闭
+        1. `range c` 循环的次数并不限定于 `channel`的定义数，而是发送数据到c的次数
+        2. 需要主动在sender里面close channel，否则会deadlock
+    4. 只能在sender里面发close，在receiver中发close会panic
+    5. channel不像文件，一般不需要关闭它，close()仅当在一些必须要告诉接收者没有更多数据会来了的情况，比如为了关闭一个range loop
+5. Select
+    1. Select语法让一个routine在多个通信操作上等待
+    2. 一个select阻塞直到其中一个case可以执行，然后它会执行那个case，如果多个同时ready，它会随机选个
+        1. 这里自测发现矛盾的点，加上default，发现中间会穿插很多default行为
+        2. [如果去掉for循环，只执行一次default，并不会阻塞](./concurrency_study/select2.go)
+        3. 结论
+            1. 仅select并不阻塞
+            2. for + select组合时，由于没有default行为，看上去直到其中某一个case满足条件时才执行那个case
+            3. 相当于一直在死循环，直到某个channel接收到值
+6. Default Select
+    1. 如5中所想，实际会走default，Good example!
+    2. time.Tick()和time.After()返回的都是channel，发送方在time内部
+7. 用channel来实现等价二叉树练习
+    1. 可以有很多种所存储的是同样的值的二叉树
+    2. 在大部分语言中匹配两个二叉树中的值是否一致是件很困难的事情
+    3. 我们将用Concurrency和channels来实现一种简单写法
+8. [练习](./concurrency_study/equivalentbinarytree.go) 
+    1. tree.New()返回的是一个有序二叉树，值相同，结构不同
+    2. 二叉树的遍历，应当从最下、最左子树开始，依次根节点，右节点
+    3. Same中比较两个tree的Node值，如果得到需要遍历的N，或者如何终止遍历
+        1. 使用闭包，实现channel的close() 参考[这里](https://stackoverflow.com/questions/12224042/go-tour-exercise-equivalent-binary-trees)   
+    4. 虽然tree.New()总是返回10个值，如果需要考虑两者数量一致
+        
+    
