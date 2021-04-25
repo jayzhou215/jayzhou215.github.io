@@ -304,4 +304,7 @@ func main() {
             3. 在`rot13.Reader()`中，需要先去执行`io.Reader`的`Read()`方法，拿到原始输入
             4. 针对原始输入进行rot13加密
     2. [rot13的原理](https://en.wikipedia.org/wiki/ROT13)
-        
+24. Images
+    1. 三个methods的interface
+25. [Image exercise](./interfaces/images.go)
+    1. can try `(x+y)/2, x*y, and x^y` here, like in [slice exercise](http://127.0.0.1:3999/moretypes/18)
