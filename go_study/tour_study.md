@@ -275,3 +275,33 @@ func main() {
         return
     }
     ```
+19. Go程序通过`error`值表达error状态
+    1. error type是一个内置interface，和fmt.Stringer类型
+    2. 和fmt.Stinger一样，fmt包在打印信息时会寻找error interface
+    3. Functions经常返回error value，调用代码需要通过测试err是否为nil来处理errors
+    4. A nil error 表示成功，非nil error表示失败
+20. [error exercise](./interfaces/errors.go)
+    1. [算法原理](https://zhuanlan.zhihu.com/p/58754724)
+    2. 算法解释: 
+        1. 假定一个值z
+        2. 假定值z*z - x得到误差
+        3. 按照 `2*z` 的速率计算得到一个误差修正值 -- 如果不用`2*z`而是用`3*z`或者`1.5*z`只是会慢些逼近。`2*z`在数学上也是z的平方的导数，用导数去逼近会更快。
+        4. 用这个修正值去修正z
+    3. 值为-2时，不做错误检查，结果是0.5353752385394379
+21. Readers
+    1. io包指定了io.Reader interface，代表了数据流读的结尾
+    2. Go中提供的基础包 files, network connections, compressor, cipher...
+    3. Read弹出给定byte切片数据并且返回弹出的字节数和一个error值
+    4. 当stream end的时候返回一个io.EOF error
+    5. 示例中`b[:n]` 如果把 `[:n]`去掉，可以发现上次读到的数据还在其中
+22. [Read exercise](./interfaces/reader.go)
+23. [rot13 exercise](./interfaces/rot.go)
+    1. 整个完整的执行链路
+        1. 查看`io.Copy()`源码，确定在这里会执行这段`nr, er := src.Read(buf)`，其中`buf`是重新创建的
+        2. Read()方法的链式调用
+            1. `"Lbh penpxrq gur pbqr!"`这个是需要加密的字符串
+            2. `string.NewReader()`中的`Read()`会去`r.s`中去读取byte
+            3. 在`rot13.Reader()`中，需要先去执行`io.Reader`的`Read()`方法，拿到原始输入
+            4. 针对原始输入进行rot13加密
+    2. [rot13的原理](https://en.wikipedia.org/wiki/ROT13)
+        
