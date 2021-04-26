@@ -374,4 +374,20 @@ func main() {
         2. 由于使用多线程，使用Lock, UnLock来避免冲突；仅对map操作部分进行lock,unlock，避免过多占用锁
         3. 这个功能点的hook入口，考虑新增一个crawler struct，收敛wg & mutex
     3. 开启goroutine后主线程需要等待routine执行完毕，`waitGroup` 总是 `Add(), Done(), Wait()`一起出现
-   
+    4. for循环中声明的临时变量u，如果在go func(){}()中如果使用了，需要注意做额外的传值处理，如示例
+11. Where to Go from here...
+    1. [Go Documentation](https://golang.org/doc/)
+    2. Write go code
+        1. [writing go code video(哔哩哔哩源)](https://www.bilibili.com/video/BV1pt41157WA?from=search&seid=15425332049712931967)
+        2. [How to write Go code](https://golang.org/doc/code)
+    3. Language
+        1. [package reference](https://golang.org/pkg/)
+        2. [Language specification](https://golang.org/ref/spec)
+    4. Concurrent
+        1. [Go Concurrency Patterns(哔哩哔哩源)](https://www.bilibili.com/video/BV1UJ411m7U1?from=search&seid=17329437087578237649)
+        2. [Advanced Go currency Patterns](https://www.bilibili.com/video/BV177411A7F2?from=search&seid=2366347770921386959)
+        2. [concurrent code](https://golang.org/doc/codewalk/sharemem/)
+    5. Web application
+        1. [writing web application](https://golang.org/doc/articles/wiki/)
+    6. [Go function types](https://golang.org/doc/codewalk/functions/)
+    7. [Go blog](https://blog.golang.org/)    
