@@ -33,10 +33,10 @@ func (cr *Crawler) Crawl(url string, depth int, fetcher Fetcher) {
 	for _, u := range urls {
 		if cr.setNxUrl(u) {
 			cr.wg.Add(1)
-			go func() {
+			go func(u string) {
 				defer cr.wg.Done()
 				cr.Crawl(u, depth-1, fetcher)
-			}()
+			}(u) // 这里要通过变量传递的方式传u的值，否则会总是urls中最后一个值的值
 		}
 	}
 	return
