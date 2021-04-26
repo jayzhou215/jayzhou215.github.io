@@ -361,5 +361,10 @@ func main() {
     3. Same中比较两个tree的Node值，如果得到需要遍历的N，或者如何终止遍历
         1. 使用闭包，实现channel的close() 参考[这里](https://stackoverflow.com/questions/12224042/go-tour-exercise-equivalent-binary-trees)   
     4. 虽然tree.New()总是返回10个值，如果需要考虑两者数量一致
-        
-    
+9. Sync.Mutex 互斥
+    1. 我们已经看到channel在goroutine间通讯是如何棒的
+    2. 但是，如果我们不需要通讯呢，如果我们仅仅是想保证同时只有一个goroutine可以获取一个变量来避免冲突
+    3. 这个概念叫做相互排斥(mutual exclusion)，提供这个功能的数据结构简称mutex，通过`sync.Mutex`及其方法`lock`和`unlock`        
+    4. 我们可以定义一个代码块，被执行在互相排斥中，通过用一个lock及unlock包裹如Inc方法中所展示的
+    5. 用defer unlock()来确保释放锁
+10. web-crawler
