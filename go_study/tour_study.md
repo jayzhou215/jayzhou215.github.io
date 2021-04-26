@@ -1,4 +1,4 @@
-[toc]
+[TOC]
 ## [官方教程](https://tour.golang.org/welcome/1) 学习笔记
 #### 基础
 1. 第一个Hello, world ~~ 
