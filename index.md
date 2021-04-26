@@ -1,5 +1,7 @@
-## 学习，不仅仅是学习知识，还包括学习时的心态、方法。 Step by step。
----
+-- 
+title: Jay's Space
+subtitle: 阿杰的个人空间
+--
 
 - [go_study](./go_study/index.md)
 - [mysql_study](./mysql_study/index.md)
