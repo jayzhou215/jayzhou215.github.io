@@ -363,8 +363,15 @@ func main() {
     4. 虽然tree.New()总是返回10个值，如果需要考虑两者数量一致
 9. Sync.Mutex 互斥
     1. 我们已经看到channel在goroutine间通讯是如何棒的
-    2. 但是，如果我们不需要通讯呢，如果我们仅仅是想保证同时只有一个goroutine可以获取一个变量来避免冲突
+    2. 但是，如果我们不需要通讯呢，如果我们仅仅是想保证同时只有一个goroutine可以处理某个变量来避免冲突
     3. 这个概念叫做相互排斥(mutual exclusion)，提供这个功能的数据结构简称mutex，通过`sync.Mutex`及其方法`lock`和`unlock`        
     4. 我们可以定义一个代码块，被执行在互相排斥中，通过用一个lock及unlock包裹如Inc方法中所展示的
     5. 用defer unlock()来确保释放锁
 10. web-crawler
+    1. 并发使用`go`开启goroutine
+    2. 避免重复请求
+        1. 使用map
+        2. 由于使用多线程，使用Lock, UnLock来避免冲突；仅对map操作部分进行lock,unlock，避免过多占用锁
+        3. 这个功能点的hook入口，考虑新增一个crawler struct，收敛wg & mutex
+    3. 开启goroutine后主线程需要等待routine执行完毕，`waitGroup` 总是 `Add(), Done(), Wait()`一起出现
+   
