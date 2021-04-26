@@ -1,3 +1,4 @@
+[toc]
 ## [官方教程](https://tour.golang.org/welcome/1) 学习笔记
 #### 基础
 1. 第一个Hello, world ~~ 
@@ -6,6 +7,7 @@
 3. 离线执行该教程
   * 在命令行将 `go get golang.org/x/tour` 执行完之后， 直接敲 `tour`，会在浏览器打开http://127.0.0.1:3999/welcome/1
   * [go get命令](http://c.biancheng.net/view/123.html) 
+
 #### 包、变量、函数
 1. 包名是路径的最后一个元素
 2. 包的导入可以分成多行，不过分组导入语句是好的形式
@@ -193,6 +195,7 @@ func main() {
            }()
            fmt.Println("hi!")
             ```
+
 #### Methods and Interfaces
 1. Methods
     1. Go不存在class，但是可以在类型上定义func
