@@ -123,7 +123,7 @@ func main() {
     5. `slice = append(slice, elem1, elem2)`
     6. `slice = append(slice, anotherSlice...)`
     7. `slice = append([]byte("hello "), "world"...)`
-    8. [引申阅读](https://blog.go-zh.org/go-slices-usage-and-internals)
+    8. <a href="https://blog.go-zh.org/go-slices-usage-and-internals" target="_blank">引申阅读</a>
 16. Range
     1. for 循环的 range 形式可遍历切片或映射。
     2. 当使用 for 循环遍历切片时，每次迭代都会返回两个值。
