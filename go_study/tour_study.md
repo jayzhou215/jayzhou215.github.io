@@ -389,7 +389,7 @@ func main() {
     4. Concurrent
         1. [Go Concurrency Patterns(哔哩哔哩源)](https://www.bilibili.com/video/BV1UJ411m7U1?from=search&seid=17329437087578237649)
         2. [Advanced Go currency Patterns](https://www.bilibili.com/video/BV177411A7F2?from=search&seid=2366347770921386959)
-        2. [concurrent code](https://golang.org/doc/codewalk/sharemem/)
+        3. [concurrent code](https://golang.org/doc/codewalk/sharemem/)
     5. Web application
         1. [writing web application](https://golang.org/doc/articles/wiki/)
     6. [Go function types](https://golang.org/doc/codewalk/functions/)

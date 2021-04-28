@@ -1,6 +1,11 @@
 ## 这个Video列举出的问题
 > 前言: 2009年Go就面世了~
+>
 > this video is on 2012.
+>
+> 作者是 Rob Pike (can't sure)
+>
+> 完整的代码在[这里](https://github.com/adityamenon/Google-IO_2012_Go-Concurrency-Patterns)
 
 1. Why concurrency
     1. use concurrency to describe the real world
@@ -47,4 +52,4 @@
     2. a very cheap memory allocate and collect
 
 ## 个人感想
-1. Go lang的目的是将复杂的事情收敛，让开发者更简单。                         
+1. Go lang的目的是将复杂的事情收敛，让开发者更简单。   
