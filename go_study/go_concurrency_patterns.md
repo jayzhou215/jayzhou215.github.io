@@ -12,7 +12,7 @@
     1. use concurrency to describe the real world
 2. What is concurrency
     1. concurrency is not parallelism, what's difference, 演讲者在heroku上的演讲
-    2. talks on https://tinyurl.com/goconcnotpar
+    2. talks on [concurrency is not parrallelism](golang.org/s/concurrency-is-not-parallelism)
     3. 核心强调并发
 3. a model for software construction
     1. easy to understand
