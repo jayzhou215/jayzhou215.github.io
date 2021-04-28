@@ -1,5 +1,7 @@
-[TOC]
-## [官方教程](https://tour.golang.org/welcome/1) 学习笔记
+{:toc}
+
+## 官方教程 学习笔记
+官方教程地址在[这里](https://tour.golang.org/welcome/1)
 #### 基础
 1. 第一个Hello, world ~~ 
   * 右侧的编辑器支持语法高亮
