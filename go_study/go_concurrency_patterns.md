@@ -4,7 +4,7 @@
 >
 > this video is on 2012.
 >
-> 作者是 Rob Pike (can't sure)
+> 作者是 Rob Pike
 >
 > 完整的代码在[这里](https://github.com/adityamenon/Google-IO_2012_Go-Concurrency-Patterns)
 
@@ -54,3 +54,6 @@
 
 ## 个人感想
 1. Go lang的目的是将复杂的事情收敛，让开发者更简单。   
+
+## update on 2021-04-28
+[InfoQ这里似乎给了原版PPT](https://xie.infoq.cn/article/a0880b7d215f7b82bc3a0380a){:target="_blank"}
