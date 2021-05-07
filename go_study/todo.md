@@ -7,3 +7,9 @@
     3. 变量类型是interface时，给该变量赋值时也必须传指针类型，此处不会有隐式转换
 5. 2. Go中提供的基础包 files, network connections, compressor, cipher等代码阅读
 6. 二叉树相关知识复习
+7. err is shadowed during return 整理一次
+8. image: unknown format
+    1. http取回来的body不能重复读
+    2. 导入image包的同时，要隐式的导入image/png, image/jpeg, image/gif，方式是`import _ "image/png"`
+    3. 关于这个问题，Radovsky 在 [这里](https://forum.golangbridge.org/t/is-this-a-bug-of-image-package/4362) 的回答比较清晰
+    4. 一个提醒是，遇到问题首先看看官方源文件的注释
