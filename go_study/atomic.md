@@ -1,4 +1,10 @@
-> 关于atomic的使用，下列资料已经足够详细，不再赘述 
+---
+layout: post
+title: Go - atomic study
+tags: [go]
+readtime: true
+last-updated: 2021-05-11
+---
 
 ## 资料 -- actually, they are just google top3...
 [Go 语言标准库中 atomic.Value 的前世今生](https://blog.betacat.io/post/golang-atomic-value-exploration/)
