@@ -8,6 +8,11 @@
 [20210-04-26 学习笔记](./go_concurrency_patterns.md)
 最大的收获是演讲者把复杂的事情讲的容易明白的这份心思。
 
+### sync package
+[atomic](./concurrency_study/atomic.go)
+
+
+
 ### todos
 [记录学习中想到的后续应该做的](./todo.md) 
 

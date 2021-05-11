@@ -13,3 +13,4 @@
     2. 导入image包的同时，要隐式的导入image/png, image/jpeg, image/gif，方式是`import _ "image/png"`
     3. 关于这个问题，Radovsky 在 [这里](https://forum.golangbridge.org/t/is-this-a-bug-of-image-package/4362) 的回答比较清晰
     4. 一个提醒是，遇到问题首先看看官方源文件的注释
+9. 拓展阅读 Go并发编程实战（第2版）
