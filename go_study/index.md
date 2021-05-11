@@ -9,7 +9,7 @@
 最大的收获是演讲者把复杂的事情讲的容易明白的这份心思。
 
 ### sync package
-[atomic](./atomic.md)
+[atomic](2021-05-11-atomic.md)
 
 
 
