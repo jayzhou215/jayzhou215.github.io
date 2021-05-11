@@ -16,3 +16,11 @@ subtitle: 阿杰的个人空间
 
 ## 架构心得
 [architecture thinks](./architecture/index.md)
+
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
