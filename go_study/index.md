@@ -9,7 +9,7 @@
 最大的收获是演讲者把复杂的事情讲的容易明白的这份心思。
 
 ### sync package
-[atomic](./concurrency_study/atomic.go)
+[atomic](./atomic.md)
 
 
 
