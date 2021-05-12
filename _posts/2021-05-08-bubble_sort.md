@@ -26,11 +26,16 @@ comments: true
         * golang中是隐式的，空间为2，即O(1)
     3. 稳定性 stability
         * 因为判断条件是left > right，等值时不会发生交换，总是稳定的    
-5. 参考资料
-    1. https://blog.csdn.net/YuZhiHui_No1/article/details/44339711
-    2. https://www.happycoders.eu/algorithms/bubble-sort/
-        1. 这里特别提到bubble sort在对降序排列的数组排序时明显优于对无序数组
-            * 原因是branch predictior，简单来说就是cpu会先猜你会按上一次的if else/continue分支进行执行，并且把结果算出来，而如果猜错了预执行的结果会被丢弃，再重新执行，导致delay。
-6. to test bubble sort
-    1. we need arrays with different n
-    2. 执行排序算法，跑20s，看循环次数，算平均每次耗时，得到单次算法耗时。使用的待排序数组分无序、降序
+### 引申知识点
+1. bubble sort 在对降序排列的数组排序时明显优于对无序数组
+    * 原因是branch predictior，简单来说就是cpu会先猜你会按上一次的if else/continue分支进行执行，并且把结果算出来，而如果猜错了预执行的结果会被丢弃，再重新执行，导致delay。
+2. to test bubble sort - 性能测试和功能性测试
+    1. 功能性测试，需要target array和destination array
+    2. 性能测试，只需要target array
+        1. 生成测试数组，随机生成n个数，并加入到数组中
+        2. 执行排序算法，跑20s，看循环次数，算平均每次耗时，得到单次算法耗时。使用的待排序数组分无序、降序
+    
+### 参考资料
+* [visual go bubble sort](https://visualgo.net/en/sorting)
+* [时空复杂度分析](https://blog.csdn.net/YuZhiHui_No1/article/details/44339711)
+* [happy coder bubble sort](https://www.happycoders.eu/algorithms/bubble-sort/)
