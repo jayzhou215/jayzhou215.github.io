@@ -1,7 +1,15 @@
-{:toc}
+---
+layout: post
+title: Go - tour note
+tags: [go]
+readtime: true
+comments: true
+---
+
 
 ## 官方教程 学习笔记
 官方教程地址在[这里](https://tour.golang.org/welcome/1)
+
 #### 基础
 1. 第一个Hello, world ~~ 
   * 右侧的编辑器支持语法高亮
@@ -164,7 +172,7 @@ func main() {
     delete(m, key) // 删除
     elem, ok := m[key] // 测试一个key是否已经存在
     ```
-23. [Map练习](./wordcount/main.go)
+23. [Map练习](../go_study/wordcount/main.go)
     1. string直接遍历时取出的是rune
     2. 句中的空格分隔符可能出现在开始、中间、末尾
 24. function类型的值
@@ -176,15 +184,15 @@ func main() {
     3. 疑问: 闭包的使用场景是什么
         1. https://www.calhoun.io/5-useful-ways-to-use-closures-in-go/
             1. isolate data
-                1. [fibgen](./functionclosures/fibgen.go)
+                1. [fibgen](../go_study/functionclosures/fibgen.go)
                     1. 斐波那契数列生成，持有f1, f2, 又动态变更其值
-                2. [maze](./functionclosures/maze.go)，想到一道面试题，用闭包来实现很简单，需求是在一个二维数组中按顺时针由外环向内环找到第n个数
+                2. [maze](../go_study/functionclosures/maze.go)，想到一道面试题，用闭包来实现很简单，需求是在一个二维数组中按顺时针由外环向内环找到第n个数
                 3. 这种使用场景和带有成员变量的类很像，当然在go里面是一个struct，自带function
             2. Wrapping functions and creating middleware
-                1. [timed middle ware](./functionclosures/timedmiddleware.go)
+                1. [timed middle ware](../go_study/functionclosures/timedmiddleware.go)
             3. Accessing data that typically isn’t available
-                1. [处于对数据保护的考虑，不想向外暴露特定字段时使用](./functionclosures/varprotection.go)
-            4. [Binary searching with the sort package](./functionclosures/search.go)
+                1. [处于对数据保护的考虑，不想向外暴露特定字段时使用](../go_study/functionclosures/varprotection.go)
+            4. [Binary searching with the sort package](../go_study/functionclosures/search.go)
                 1. `sort.SearchInts()`使用闭包
                 2. todo 对sort package中提供的各种排序、搜索算法进行梳理学习
             5. Deferring work 推迟执行
@@ -238,11 +246,11 @@ func main() {
 12. 底层是nil value的interface values
     1. 如果在interface内部的具体值是nil，这个method会通过一个nil receiver被调用
     2. 在某些语言这会触发一个空指针异常，但是在Go，写method的时候很友善的处理被一个nil receiver调用的情况的是很常见的
-    3. 注意，[一个持有nil的实际值的interface值本身是非nil的](./interfaces/main.go)
-13. [nil interface values](./interfaces/nilinerface.go)
+    3. 注意，[一个持有nil的实际值的interface值本身是非nil的](../go_study/interfaces/main.go)
+13. [nil interface values](../go_study/interfaces/nilinerface.go)
     1. 一个nil interface value既不持有值也不持有其具体类型
     2. 在一个nil interface上调用一个method会触发一个运行时异常，因为在interface tuple中没有类型，其来指明调用哪个具体的method
-14. [empty interface](./interfaces/emptyinterface.go)
+14. [empty interface](../go_study/interfaces/emptyinterface.go)
     1. 指定0个methods的 interface类型被称为 empty interface
     2. 一个空的empty interface可以持有任何类型的值
     3. 空interface 被那些处理未知类型的代码使用。比如`fmt.Print()`接收任何数量的`interface{}`类型    
@@ -285,7 +293,7 @@ func main() {
     2. 和fmt.Stinger一样，fmt包在打印信息时会寻找error interface
     3. Functions经常返回error value，调用代码需要通过测试err是否为nil来处理errors
     4. A nil error 表示成功，非nil error表示失败
-20. [error exercise](./interfaces/errors.go)
+20. [error exercise](../go_study/interfaces/errors.go)
     1. [算法原理](https://zhuanlan.zhihu.com/p/58754724)
     2. 算法解释: 
         1. 假定一个值z
@@ -299,8 +307,8 @@ func main() {
     3. Read弹出给定byte切片数据并且返回弹出的字节数和一个error值
     4. 当stream end的时候返回一个io.EOF error
     5. 示例中`b[:n]` 如果把 `[:n]`去掉，可以发现上次读到的数据还在其中
-22. [Read exercise](./interfaces/reader.go)
-23. [rot13 exercise](./interfaces/rot.go)
+22. [Read exercise](../go_study/interfaces/reader.go)
+23. [rot13 exercise](../go_study/interfaces/rot.go)
     1. 整个完整的执行链路
         1. 查看`io.Copy()`源码，确定在这里会执行这段`nr, er := src.Read(buf)`，其中`buf`是重新创建的
         2. Read()方法的链式调用
@@ -311,7 +319,7 @@ func main() {
     2. [rot13的原理](https://en.wikipedia.org/wiki/ROT13)
 24. Images
     1. 三个methods的interface
-25. [Image exercise](./interfaces/images.go)
+25. [Image exercise](../go_study/interfaces/images.go)
     1. can try `(x+y)/2, x*y, and x^y` here, like in [slice exercise](http://127.0.0.1:3999/moretypes/18)
 
 #### Concurrency
@@ -333,7 +341,7 @@ func main() {
     1. Channels 可以被 buffered，在make方法的第二个参数中提供 buffered length用`make`来初始化一个buffered channel
     2. 发送一个buffered channel仅当channel是满的时候会block。当buffer是空的时候，接收者会block。
     3. 修改示例装满buffer来看会发生什么
-        1. [`ch := make(chan int)`的行为](./concurrency_study/channel1.go)和[`ch := make(chan int, 1)`的行为](./concurrency_study/channel2.go)是不一致的
+        1. [`ch := make(chan int)`的行为](../go_study/concurrency_study/channel1.go)和[`ch := make(chan int, 1)`的行为](../go_study/concurrency_study/channel2.go)是不一致的
         2. 前者，在同一线程中，一旦执行收/发即会lock，需要在其他线程执行相反动作来unlock
         2. 后者，需要超过声明中的数量，才会lock
 4. Range and Close
@@ -348,7 +356,7 @@ func main() {
     1. Select语法让一个routine在多个通信操作上等待
     2. 一个select阻塞直到其中一个case可以执行，然后它会执行那个case，如果多个同时ready，它会随机选个
         1. 这里自测发现矛盾的点，加上default，发现中间会穿插很多default行为
-        2. [如果去掉for循环，只执行一次default，并不会阻塞](./concurrency_study/select2.go)
+        2. [如果去掉for循环，只执行一次default，并不会阻塞](../go_study/concurrency_study/select2.go)
         3. 结论
             1. 仅select并不阻塞
             2. for + select组合时，由于没有default行为，看上去直到其中某一个case满足条件时才执行那个case
@@ -360,7 +368,7 @@ func main() {
     1. 可以有很多种所存储的是同样的值的二叉树
     2. 在大部分语言中匹配两个二叉树中的值是否一致是件很困难的事情
     3. 我们将用Concurrency和channels来实现一种简单写法
-8. [练习](./concurrency_study/equivalentbinarytree.go) 
+8. [练习](../go_study/concurrency_study/equivalentbinarytree.go) 
     1. tree.New()返回的是一个有序二叉树，值相同，结构不同
     2. 二叉树的遍历，应当从最下、最左子树开始，依次根节点，右节点
     3. Same中比较两个tree的Node值，如果得到需要遍历的N，或者如何终止遍历
@@ -372,7 +380,7 @@ func main() {
     3. 这个概念叫做相互排斥(mutual exclusion)，提供这个功能的数据结构简称mutex，通过`sync.Mutex`及其方法`lock`和`unlock`        
     4. 我们可以定义一个代码块，被执行在互相排斥中，通过用一个lock及unlock包裹如Inc方法中所展示的
     5. 用defer unlock()来确保释放锁
-10. [web-crawler](./concurrency_study/webcrawler.go)
+10. [web-crawler](../go_study/concurrency_study/webcrawler.go)
     1. 并发使用`go`开启goroutine
     2. 避免重复请求
         1. 使用map
