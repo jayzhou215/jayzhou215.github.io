@@ -1,12 +1,11 @@
-## visualgo study
-[visualgo的主页](https://visualgo.net/en/)
+---
+layout: post
+title: Algorithm - bubble sort
+tags: [go]
+readtime: true
+comments: true
+---
 
-
-## sorting
-sorting综述
-排序算法是一个为items（是可比较的，比如整数、浮点数值、字符串等）按照一定顺序（升序、非降序、降序、非升序、字典图等） reordering的非常经典的问题。
-有很多不同的排序算法，每一个都有各自的优缺点
-下面的排序是 integers, not necessarily distinct, in non-decreasing order 
 ### bubble sort
 1. 冒泡排序的定义 它重复地走访过要排序的数列，一次比较两个元素，如果他们的顺序错误就把他们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢"浮"到数列的顶端。
 2. 基本步骤
@@ -17,7 +16,7 @@ sorting综述
     1. 定义swapped变量，使用do while 跳出循环，对比循环n次，较少无效循环
     2. 定义indexToLastUnsortedElement，减少后续遍历中需要遍历的个数
     3. 匹配条件 left > right do swap
-3. [bubble code](./sort/bubble.go)
+3. [bubble code](../algorithm/sort/bubble.go)
 4. 时间空间复杂度
     1. 时间复杂度: 外循环和内循环以及判断和交换元素的时间开销
         * 最优情况，内外循环+判断+无需交换，(n-1)，即O(n)。（助力，这里对应到具体实现代码是如此，默认的冒泡算法最优时间复杂度是O(n^2)）
