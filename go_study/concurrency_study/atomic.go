@@ -3,19 +3,40 @@ package main
 import (
 	"fmt"
 	"sync"
-	"sync/atomic"
 )
 
+type Data struct {
+	Val int
+}
+
 func main() {
-	var cnt int64
+	var data *Data
+	go func() {
+		for {
+			if data == nil {
+				data = &Data{5}
+			}
+		}
+	}()
+	go func() {
+		for {
+			if data != nil {
+				data = nil
+			}
+		}
+	}()
+
+	go func() {
+		for {
+			if data != nil {
+				if data.Val != 5 {
+					// 这里不会命中
+					fmt.Println("data.val not 5, current is", data.Val)
+				}
+			}
+		}
+	}()
 	var wg sync.WaitGroup
-	for i := 0; i < 10000; i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			atomic.AddInt64(&cnt, 1)
-		}()
-	}
+	wg.Add(1)
 	wg.Wait()
-	fmt.Println("cnt:", cnt)
 }
