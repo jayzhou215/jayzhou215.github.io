@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
+package main_test
 
 import (
+	"fmt"
 	"math/rand"
 	"reflect"
 	"runtime"
@@ -286,11 +287,15 @@ func TestConcurrentRange(t *testing.T) {
 
 	done := make(chan struct{})
 	var wg sync.WaitGroup
+	var cnt int64
 	defer func() {
 		close(done)
 		wg.Wait()
+		fmt.Println("cnt", cnt)
 	}()
-	for g := int64(runtime.GOMAXPROCS(0)); g > 0; g-- {
+	gomaxprocs := runtime.GOMAXPROCS(0)
+	fmt.Println("g:", gomaxprocs)
+	for g := int64(gomaxprocs); g > 0; g-- {
 		r := rand.New(rand.NewSource(g))
 		wg.Add(1)
 		go func(g int64) {
@@ -303,6 +308,8 @@ func TestConcurrentRange(t *testing.T) {
 				}
 				for n := int64(1); n < mapSize; n++ {
 					if r.Int63n(mapSize) == 0 {
+						atomic.AddInt64(&cnt, 1)
+						fmt.Println("store", n, i, g, n*i*g)
 						m.Store(n, n*i*g)
 					} else {
 						m.Load(n)
@@ -316,6 +323,7 @@ func TestConcurrentRange(t *testing.T) {
 	if testing.Short() {
 		iters = 16
 	}
+	fmt.Println(iters)
 	for n := iters; n > 0; n-- {
 		seen := make(map[int64]bool, mapSize)
 
