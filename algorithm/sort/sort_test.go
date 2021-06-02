@@ -13,7 +13,7 @@ var (
 
 func initArray() []int {
 	var unsortedArray []int
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 100000; i++ {
 		randInt := rand.Int()
 		unsortedArray = append(unsortedArray, randInt)
 	}
@@ -44,6 +44,59 @@ func TestQuick(t *testing.T) {
 	unsortedArray := []int{3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48}
 	quickSort(unsortedArray, 0, len(unsortedArray)-1)
 	judge(unsortedArray, sortedArray)
+}
+
+func TestMerge(t *testing.T) {
+	unsortedArray := []int{3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48}
+	lastArray := mergeSort(unsortedArray)
+	judge(lastArray, sortedArray)
+}
+
+func mergeSort(array []int) []int {
+	if len(array) <= 1 {
+		return array
+	}
+	// 先拆
+	leftArr := mergeSort(array[0 : len(array)/2])
+	rightArr := mergeSort(array[len(array)/2:])
+	// 再合
+	return merge(leftArr, rightArr)
+}
+
+func merge(arr1 []int, arr2 []int) []int {
+	newArr := make([]int, len(arr1)+len(arr2))
+	idx := 0
+	idx1 := 0
+	idx2 := 0
+	for {
+		// arr1 到达末尾
+		if idx1 >= len(arr1) {
+			// arr2还有数据
+			if idx2 < len(arr2) {
+				copy(newArr[idx:], arr2[idx2:])
+			}
+			break
+		}
+		// arr2 到达末尾
+		if idx2 >= len(arr2) {
+			// arr1还有数据
+			if idx1 < len(arr1) {
+				copy(newArr[idx:], arr1[idx1:])
+			}
+			break
+		}
+		// 两者都还有数据
+		if arr1[idx1] < arr2[idx2] {
+			newArr[idx] = arr1[idx1]
+			idx++
+			idx1++
+		} else {
+			newArr[idx] = arr2[idx2]
+			idx++
+			idx2++
+		}
+	}
+	return newArr
 }
 
 func quickSort(unsortedArray []int, left, right int) {
@@ -125,6 +178,11 @@ func BenchmarkInsert(b *testing.B) {
 func BenchmarkQuick(b *testing.B) {
 	newArray := initArray()
 	quickSort(newArray, 0, len(newArray)-1)
+}
+
+func BenchmarkMerge(b *testing.B) {
+	newArray := initArray()
+	_ = mergeSort(newArray)
 }
 
 func bubbleSort(unsortedArray []int) {
