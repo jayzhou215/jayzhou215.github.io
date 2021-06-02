@@ -43,15 +43,15 @@ comments: true
 ```sh
 
 # 1000个int数排序
-BenchmarkSelect
-BenchmarkSelect-12    	1000000000	         0.000812 ns/op
 BenchmarkBubble
 BenchmarkBubble-12    	1000000000	         0.00165 ns/op
+BenchmarkSelect
+BenchmarkSelect-12    	1000000000	         0.000812 ns/op
 
 # 10000个int数排序
-BenchmarkSelect
-BenchmarkSelect-12    	1000000000	         0.0538 ns/op
 BenchmarkBubble
 BenchmarkBubble-12    	1000000000	         0.130 ns/op
+BenchmarkSelect
+BenchmarkSelect-12    	1000000000	         0.0538 ns/op
 
 ```

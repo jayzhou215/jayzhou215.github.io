@@ -20,25 +20,35 @@ comments: true
     2. 单次循环可以理解为 对有序序列进行一次反向的冒泡排序
 3. [insert sort code](../algorithm/sort/sort_test.go)
 4. 时间空间复杂度
-    1. 时间复杂度: 外循环和内循环以及判断和交换元素的时间开销
-        * 比较操作，总是 n*(n-1)/2，即O(n^2)
-        * 交换操作，最优0次，最坏n-1次，即O(n)
-        * 赋值操作，0 ~ 3*(n-1)
-    2. 空间复杂度: 交换元素时那个临时变量所占的内存空间
+    1. 时间复杂度:
+        * 比较操作，最优n-1次，最坏n*(n-1)/2，即O(n^2)
+        * 交换操作，最优0次，最坏n*(n-1)/2次，即O(n^2)
+    2. 空间复杂度:
         * 交互在golang中是隐式的，空间为2，即O(1)
-        * 赋值操作空间为1，即O(1)
     3. 稳定性 stability
-        * 因为判断条件是left > right，等值时不会发生交换，总是稳定的    
+        * 可控，因为判断条件是left > right，等值时不会发生交换，总是稳定的    
 
 ### 优点
-简单 & in-place(原地操作，无需过多辅助空间)
+简单 & in-place(原地操作) & 对有序序列进行操作，减少了无效比较，且有优化空间
 
 ### 缺点
-1、和冒泡排序同样的问题，存在大量比较只在当次循环有效
-2、无及时跳出循环的方式
-
-### 引申知识点
-1. 交换次数比冒泡排序较少，由于交换所需CPU时间比比较所需的CPU时间多，n值较小时，选择排序比冒泡排序快。
-2. 当n值较大时，选择排序在下面的测试中慢于冒泡排序，原因是冒泡排序通过判断是否有发生交换来跳出循环，但选择排序无法做出类似的优化
+平均时间复杂度依然是O(n^2)
 
 ### bench测试
+```sh
+# 1000个Int数
+BenchmarkBubble
+BenchmarkBubble-12    	1000000000	         0.000879 ns/op
+BenchmarkSelect
+BenchmarkSelect-12    	1000000000	         0.000732 ns/op
+BenchmarkInsert
+BenchmarkInsert-12    	1000000000	         0.000288 ns/op
+
+# 10000个int数
+BenchmarkBubble
+BenchmarkBubble-12    	1000000000	         0.101 ns/op
+BenchmarkSelect
+BenchmarkSelect-12    	1000000000	         0.0513 ns/op
+BenchmarkInsert
+BenchmarkInsert-12    	1000000000	         0.0235 ns/op
+```
