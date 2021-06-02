@@ -13,9 +13,9 @@ comments: true
     2. 再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾
     3. 以此类推，直到所有元素均排序完毕
 2. 示例代码分析
-    1. 循环n-1次，此循环次数不可减少
+    1. 循环n-1次
     2. 记录单次循环中最小值位置，交互未排序数组中首元素值与最小值
-3. [select sort code](../algorithm/sort/select.go)
+3. [select sort code](../algorithm/sort/sort_test.go)
 4. 时间空间复杂度
     1. 时间复杂度: 外循环和内循环以及判断和交换元素的时间开销
         * 比较操作，总是 n*(n-1)/2，即O(n^2)
@@ -32,6 +32,7 @@ comments: true
 
 ### 缺点
 1、依然存在大量无效比较，只在当次循环
+2、未利用有序序列，不便于优化，总比较次数总是固定的
 
 ### 引申知识点
 1. 由于交换所需CPU时间比比较所需的CPU时间多
@@ -40,15 +41,17 @@ comments: true
 [code](../algorithm/sort/sort_test.go)
 
 ```sh
-# 10000个int数排序
-BenchmarkSelect
-BenchmarkSelect-12    	     381	   3337452 ns/op
-BenchmarkBubble
-BenchmarkBubble-12    	       1	2639470895 ns/op
 
 # 1000个int数排序
 BenchmarkSelect
-BenchmarkSelect-12    	1000000000	         0.0220 ns/op
+BenchmarkSelect-12    	1000000000	         0.000812 ns/op
 BenchmarkBubble
-BenchmarkBubble-12    	1000000000	         0.126 ns/op
+BenchmarkBubble-12    	1000000000	         0.00165 ns/op
+
+# 10000个int数排序
+BenchmarkSelect
+BenchmarkSelect-12    	1000000000	         0.0538 ns/op
+BenchmarkBubble
+BenchmarkBubble-12    	1000000000	         0.130 ns/op
+
 ```

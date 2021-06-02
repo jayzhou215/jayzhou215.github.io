@@ -16,7 +16,7 @@ comments: true
     1. 定义swapped变量，使用do while 跳出循环，对比循环n次，较少无效循环
     2. 定义indexToLastUnsortedElement，减少后续遍历中需要遍历的个数
     3. 匹配条件 left > right do swap
-3. [bubble code](../algorithm/sort/bubble.go)
+3. [bubble code](../algorithm/sort/sort_test.go)
 4. 时间空间复杂度
     1. 时间复杂度: 外循环和内循环以及判断和交换元素的时间开销
         * 最优情况，内外循环+判断+无需交换，(n-1)，即O(n)。（助力，这里对应到具体实现代码是如此，默认的冒泡算法最优时间复杂度是O(n^2)）
