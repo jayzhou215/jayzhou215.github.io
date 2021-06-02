@@ -9,7 +9,7 @@ var (
 	unsortedArray []int
 )
 
-func init() {
+func initArray() {
 	for i := 0; i < 1000; i++ {
 		randInt := rand.Int()
 		unsortedArray = append(unsortedArray, randInt)
@@ -17,10 +17,12 @@ func init() {
 }
 
 func BenchmarkSelect(b *testing.B) {
+	initArray()
 	selectSort()
 }
 
 func BenchmarkBubble(b *testing.B) {
+	initArray()
 	bubbleSort()
 }
 

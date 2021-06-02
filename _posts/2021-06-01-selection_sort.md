@@ -28,93 +28,27 @@ comments: true
         * 因为判断条件是left > right，等值时不会发生交换，总是稳定的    
 
 ### 优点
-简单 & in-place(原地操作，无需过多辅助空间)
-比冒泡排序快的原因
+简单 & in-place(原地操作，无需过多辅助空间) & 大大减少了交换次数
+
+### 缺点
+1、依然存在大量无效比较，只在当次循环
+
 ### 引申知识点
-1. 交换次数比冒泡排序较少，由于交换所需CPU时间比比较所需的CPU时间多，n值较小时，选择排序比冒泡排序快。
-2. 当n值较大时，选择排序明显慢于冒泡排序，原因是冒泡排序通过判断是否有发生交换来跳出循环，但选择排序无法做出类似的优化
+1. 由于交换所需CPU时间比比较所需的CPU时间多
 
 ### bench测试
-
-```go
-package main
-
-import (
-	"math/rand"
-	"testing"
-)
-
-var (
-	unsortedArray []int
-)
-
-func init() {
-	for i := 0; i < 1000; i++ {
-		randInt := rand.Int()
-		unsortedArray = append(unsortedArray, randInt)
-	}
-}
-
-func BenchmarkSelect(b *testing.B) {
-	selectSort()
-}
-
-func BenchmarkBubble(b *testing.B) {
-	bubbleSort()
-}
-
-func bubbleSort() {
-	swapped := true
-	lastUnsortedElementIndex := len(unsortedArray)
-	for swapped {
-		swapped = false
-		for i := 0; i < lastUnsortedElementIndex-1; i++ {
-			if unsortedArray[i] > unsortedArray[i+1] {
-				swap(unsortedArray, i, i+1)
-				swapped = true
-			}
-		}
-		lastUnsortedElementIndex--
-		if !swapped {
-			break
-		}
-	}
-}
-
-func selectSort() {
-	for i := 0; i < len(unsortedArray)-1; i++ {
-		minValIdx := i
-		for j := i + 1; j < len(unsortedArray); j++ {
-			if unsortedArray[minValIdx] > unsortedArray[j] {
-				minValIdx = j
-			}
-		}
-		if minValIdx != i {
-			swap(unsortedArray, i, minValIdx)
-		}
-	}
-}
-
-func swap(array []int, leftIndex int, rightIndex int) {
-	array[leftIndex], array[rightIndex] = array[rightIndex], array[leftIndex]
-}
-
-```
+[code](../algorithm/sort/sort_test.go)
 
 ```sh
 # 10000个int数排序
-goos: darwin
-goarch: amd64
 BenchmarkSelect
-BenchmarkSelect-12    	       1	5187351688 ns/op
+BenchmarkSelect-12    	     381	   3337452 ns/op
 BenchmarkBubble
-BenchmarkBubble-12    	1000000000	         0.000102 ns/op
+BenchmarkBubble-12    	       1	2639470895 ns/op
 
 # 1000个int数排序
-goos: darwin
-goarch: amd64
 BenchmarkSelect
-BenchmarkSelect-12    	1000000000	         0.000731 ns/op
+BenchmarkSelect-12    	1000000000	         0.0220 ns/op
 BenchmarkBubble
-BenchmarkBubble-12    	1000000000	         0.000002 ns/op
+BenchmarkBubble-12    	1000000000	         0.126 ns/op
 ```
