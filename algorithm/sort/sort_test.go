@@ -13,7 +13,7 @@ var (
 
 func initArray() []int {
 	var unsortedArray []int
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 1000; i++ {
 		randInt := rand.Int()
 		unsortedArray = append(unsortedArray, randInt)
 	}
@@ -38,6 +38,42 @@ func TestInsert(t *testing.T) {
 	unsortedArray := []int{3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48}
 	insertSort(unsortedArray)
 	judge(unsortedArray, sortedArray)
+}
+
+func TestQuick(t *testing.T) {
+	unsortedArray := []int{3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48}
+	quickSort(unsortedArray, 0, len(unsortedArray)-1)
+	judge(unsortedArray, sortedArray)
+}
+
+func quickSort(unsortedArray []int, left, right int) {
+	if right > left {
+		// 随机选择一个基准点，这里取中间的值，可以随意
+		pivotIdx := (right + left) / 2
+		// 分割array, 所有小于基准值的在左侧，大于的在右侧
+		pivotNewIdx := partition(unsortedArray, left, right, pivotIdx)
+		quickSort(unsortedArray, left, pivotNewIdx-1)
+		quickSort(unsortedArray, pivotNewIdx+1, right)
+	}
+}
+
+func partition(array []int, left int, right int, pivotIdx int) (storeIdx int) {
+	pivotVal := array[pivotIdx]
+	// 从左一开始记做存储位置
+	storeIdx = left
+	// 先将pivot缓存到right位置
+	swap(array, pivotIdx, right)
+	// 从left开始，一直到right-1，包括right-1
+	for i := left; i <= right-1; i++ {
+		// 所有小的依次放到左一左二...
+		if array[i] < pivotVal {
+			swap(array, i, storeIdx)
+			storeIdx++
+		}
+	}
+	// 依次放置完，最终处理下之前缓存过的pivot
+	swap(array, right, storeIdx)
+	return
 }
 
 func insertSort(unsortedArray []int) {
@@ -84,6 +120,11 @@ func BenchmarkSelect(b *testing.B) {
 func BenchmarkInsert(b *testing.B) {
 	newArray := initArray()
 	insertSort(newArray)
+}
+
+func BenchmarkQuick(b *testing.B) {
+	newArray := initArray()
+	quickSort(newArray, 0, len(newArray)-1)
 }
 
 func bubbleSort(unsortedArray []int) {
