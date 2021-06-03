@@ -39,3 +39,48 @@ comments: true
 * [visual go bubble sort](https://visualgo.net/en/sorting)
 * [时空复杂度分析](https://blog.csdn.net/YuZhiHui_No1/article/details/44339711)
 * [happy coder bubble sort](https://www.happycoders.eu/algorithms/bubble-sort/)
+
+
+### code
+```go
+
+func bubbleSort(array []int) {
+	// iterate n-1次
+	// iterate unsorted array [0: n-i-1]
+	// compare j, j+1 swap them if arr[j] > arr[j+1]
+	// jump out if no swap happen in internal iterate
+	for i := 0; i < len(array)-1; i++ {
+		swapped := false
+		for j := 0; j < len(array)-i-1; j++ {
+			if array[j] > array[j+1] {
+				array[j], array[j+1] = array[j+1], array[j]
+				swapped = true
+			}
+		}
+		if !swapped {
+			break
+		}
+	}
+}
+
+
+func bubbleSort(unsortedArray []int) {
+	swapped := true
+	lastUnsortedElementIndex := len(unsortedArray)
+	for swapped {
+		swapped = false
+		for i := 0; i < lastUnsortedElementIndex-1; i++ {
+			if unsortedArray[i] > unsortedArray[i+1] {
+				swap(unsortedArray, i, i+1)
+				swapped = true
+			}
+		}
+		lastUnsortedElementIndex--
+		if !swapped {
+			break
+		}
+	}
+}
+
+
+```

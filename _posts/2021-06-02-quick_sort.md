@@ -60,4 +60,50 @@ BenchmarkInsert-12    	1000000000	         0.0215 ns/op
 BenchmarkQuick
 BenchmarkQuick-12     	1000000000	         0.000843 ns/op
 
+
+# random quick search vs quick search 100000个数排序
+
+BenchmarkQuick
+BenchmarkQuick-12          	1000000000	         0.0128 ns/op
+BenchmarkRandomQuick
+BenchmarkRandomQuick-12    	1000000000	         0.0105 ns/op
+```
+
+### code 
+```go
+
+func quickSort(array []int, left int, right int) {
+	if left >= right {
+		return
+	}
+	// just pick a pivot, it can be any value between [left: right]
+	pivot := left
+	// put all the value smaller than array[pivot] to left, the others to right, and get the newPivot
+	newPivot := partition(array, left, right, pivot)
+	// sort left part recursively
+	quickSort(array, left, newPivot-1)
+	// sort right part recursively
+	quickSort(array, newPivot+1, right)
+}
+
+func partition(array []int, left int, right int, pivot int) (newPivot int) {
+	// define storeIdx as left
+	// define pivotVal to store pivot val
+	// swap pivot right
+	// iterate array [left, right)
+	// array[storeIdx] = array[i] if array[i] < pivotVal
+	// swap storeIdx right
+	pivotVal := array[pivot]
+	storeIdx := left
+	array[pivot], array[right] = array[right], array[pivot]
+	for i := left; i <= right-1; i++ {
+		if array[i] < pivotVal {
+			array[storeIdx], array[i] = array[i], array[storeIdx]
+			storeIdx++
+		}
+	}
+	array[storeIdx], array[right] = array[right], array[storeIdx]
+	return storeIdx
+}
+
 ```

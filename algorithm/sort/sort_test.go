@@ -110,6 +110,17 @@ func quickSort(unsortedArray []int, left, right int) {
 	}
 }
 
+func randomQuickSort(unsortedArray []int, left, right int) {
+	if right > left {
+		// 随机选择一个基准点，这里取中间的值，可以随意
+		pivotIdx := rand.Intn(right-left) + left
+		// 分割array, 所有小于基准值的在左侧，大于的在右侧
+		pivotNewIdx := partition(unsortedArray, left, right, pivotIdx)
+		quickSort(unsortedArray, left, pivotNewIdx-1)
+		quickSort(unsortedArray, pivotNewIdx+1, right)
+	}
+}
+
 func partition(array []int, left int, right int, pivotIdx int) (storeIdx int) {
 	pivotVal := array[pivotIdx]
 	// 从左一开始记做存储位置
@@ -134,15 +145,15 @@ func insertSort(unsortedArray []int) {
 	// 每次将新的元素插入到有序序列中
 	for i := 1; i < len(unsortedArray); i++ {
 		// 从无序数组中取出首位，待插入有序数组
-		current := unsortedArray[i]
+		firstUnsortedVal := unsortedArray[i]
 
 		// 记录当前待插入索引，默认 -1
-		insertIdx := -1
+		insertIdx := i
 
 		// 从0到i-1为有序数组，倒序遍历
 		for j := i - 1; j >= 0; j-- {
-			// 有序数组的第j个值如比current大，则将第j位值后移一位
-			if unsortedArray[j] > current {
+			// 有序数组的第j个值如比firstUnsortedVal大，则将第j位值后移一位
+			if unsortedArray[j] > firstUnsortedVal {
 				// 记录待插入索引
 				insertIdx = j
 				unsortedArray[j+1] = unsortedArray[j]
@@ -152,38 +163,45 @@ func insertSort(unsortedArray []int) {
 			}
 		}
 
-		// 有效的索引值 > -1，找到需要更新的位置，进行插入
-		if insertIdx > -1 {
-			unsortedArray[insertIdx] = current
+		// 找到需要更新的位置，进行插入
+		if insertIdx != i {
+			unsortedArray[insertIdx] = firstUnsortedVal
 		}
 
 	}
 }
 
-func BenchmarkBubble(b *testing.B) {
-	newArray := initArray()
-	bubbleSort(newArray)
-}
-
-func BenchmarkSelect(b *testing.B) {
-	newArray := initArray()
-	selectSort(newArray)
-}
-
-func BenchmarkInsert(b *testing.B) {
-	newArray := initArray()
-	insertSort(newArray)
-}
+//
+//func BenchmarkBubble(b *testing.B) {
+//	newArray := initArray()
+//	bubbleSort(newArray)
+//}
+//
+//func BenchmarkSelect(b *testing.B) {
+//	newArray := initArray()
+//	selectSort(newArray)
+//}
+//
+//func BenchmarkInsert(b *testing.B) {
+//	newArray := initArray()
+//	insertSort(newArray)
+//}
 
 func BenchmarkQuick(b *testing.B) {
 	newArray := initArray()
 	quickSort(newArray, 0, len(newArray)-1)
 }
 
-func BenchmarkMerge(b *testing.B) {
+func BenchmarkRandomQuick(b *testing.B) {
 	newArray := initArray()
-	_ = mergeSort(newArray)
+	randomQuickSort(newArray, 0, len(newArray)-1)
 }
+
+//
+//func BenchmarkMerge(b *testing.B) {
+//	newArray := initArray()
+//	_ = mergeSort(newArray)
+//}
 
 func bubbleSort(unsortedArray []int) {
 	swapped := true
@@ -204,6 +222,11 @@ func bubbleSort(unsortedArray []int) {
 }
 
 func selectSort(unsortedArray []int) {
+	// iterate [0: n-1)
+	// minIdx = i
+	// iterate unsorted array [i+1, n)
+	// minIdx = j if arr[minIdx] > arr[j]
+	// after internal iterate swap(arr[i], arr[minIdx])
 	for i := 0; i < len(unsortedArray)-1; i++ {
 		minValIdx := i
 		for j := i + 1; j < len(unsortedArray); j++ {

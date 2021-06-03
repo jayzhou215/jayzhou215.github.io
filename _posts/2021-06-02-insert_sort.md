@@ -52,3 +52,30 @@ BenchmarkSelect-12    	1000000000	         0.0513 ns/op
 BenchmarkInsert
 BenchmarkInsert-12    	1000000000	         0.0235 ns/op
 ```
+
+### code
+```go
+func insertSort(array []int) {
+	// the first element is in sorted array by default
+	// iterate for i in range [1: n)
+	// reverse iterate array for j in range [0: i)
+	// set j+1 val with j val if arr[j] > first unsorted value
+	// after find the insert idx, set idx first unsorted value
+	for i := 1; i < len(array); i++ {
+		unsortedVal := array[i]
+		insertIdx := i
+		for j := i - 1; j >= 0; j-- {
+			if array[j] > unsortedVal {
+				array[j+1] = array[j]
+				insertIdx = j
+				continue
+			}
+			break
+		}
+		if insertIdx != i {
+			array[insertIdx] = unsortedVal
+		}
+	}
+}
+
+```
