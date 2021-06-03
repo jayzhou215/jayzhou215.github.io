@@ -18,7 +18,7 @@ comments: true
 3. [merge sort code](../algorithm/sort/sort_test.go)
 4. 时间空间复杂度
     1. 时间复杂度:
-        * 最优O(n*log(n))，最坏O(n^2)
+        * 平均及最优O(n*log(n))，最坏O(n^2)
     2. 空间复杂度: 
         * 交互在golang中是隐式的，空间为2，即O(1)
     3. 稳定性 stability
@@ -76,4 +76,18 @@ BenchmarkQuick
 BenchmarkQuick-12     	1000000000	         0.00894 ns/op
 BenchmarkMerge
 BenchmarkMerge-12     	1000000000	         0.0139 ns/op
+
+// 10000 merge sort vs in_place merge sort
+BenchmarkMerge
+BenchmarkMerge-12           	1000000000	         0.00169 ns/op
+BenchmarkInPlaceMerge
+BenchmarkInPlaceMerge-12    	1000000000	         0.0200 ns/op
+
+// 100000 merge sort vs in_place merge sort
+// in place merge can be coded, but it's not efficient
+BenchmarkMerge
+BenchmarkMerge-12           	1000000000	         0.0165 ns/op
+BenchmarkInPlaceMerge
+BenchmarkInPlaceMerge-12    	       1	2092553212 ns/op
+
 ```

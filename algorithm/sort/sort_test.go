@@ -13,8 +13,9 @@ var (
 
 func initArray() []int {
 	var unsortedArray []int
-	for i := 0; i < 100000; i++ {
-		randInt := rand.Int()
+	length := 100000
+	for i := 0; i < length; i++ {
+		randInt := rand.Intn(length)
 		unsortedArray = append(unsortedArray, randInt)
 	}
 	return unsortedArray
@@ -50,6 +51,43 @@ func TestMerge(t *testing.T) {
 	unsortedArray := []int{3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48}
 	lastArray := mergeSort(unsortedArray)
 	judge(lastArray, sortedArray)
+}
+
+func TestCount(t *testing.T) {
+	unsortedArray := []int{3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48}
+	countSort(unsortedArray)
+	judge(unsortedArray, sortedArray)
+}
+
+func countSort(array []int) {
+	// get max value in array
+	maxVal := array[0]
+	for i := 0; i < len(array); i++ {
+		if maxVal < array[i] {
+			maxVal = array[i]
+		}
+	}
+	// declare countArr with len maxVal+1
+	countArr := make([]int, maxVal+1)
+	// incr val count
+	for i := 0; i < len(array); i++ {
+		val := array[i]
+		countArr[val] += 1
+	}
+	idx := 0
+	for val := 0; val < len(countArr); val++ {
+		valCnt := countArr[val]
+		for j := 0; j < valCnt; j++ {
+			array[idx] = val
+			idx++
+		}
+	}
+}
+
+func TestInPlaceMerge(t *testing.T) {
+	unsortedArray := []int{3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48}
+	inPlaceMergeSort(unsortedArray, 0, len(unsortedArray))
+	judge(unsortedArray, sortedArray)
 }
 
 func mergeSort(array []int) []int {
@@ -171,21 +209,20 @@ func insertSort(unsortedArray []int) {
 	}
 }
 
-//
-//func BenchmarkBubble(b *testing.B) {
-//	newArray := initArray()
-//	bubbleSort(newArray)
-//}
-//
-//func BenchmarkSelect(b *testing.B) {
-//	newArray := initArray()
-//	selectSort(newArray)
-//}
-//
-//func BenchmarkInsert(b *testing.B) {
-//	newArray := initArray()
-//	insertSort(newArray)
-//}
+func BenchmarkBubble(b *testing.B) {
+	newArray := initArray()
+	bubbleSort(newArray)
+}
+
+func BenchmarkSelect(b *testing.B) {
+	newArray := initArray()
+	selectSort(newArray)
+}
+
+func BenchmarkInsert(b *testing.B) {
+	newArray := initArray()
+	insertSort(newArray)
+}
 
 func BenchmarkQuick(b *testing.B) {
 	newArray := initArray()
@@ -197,11 +234,61 @@ func BenchmarkRandomQuick(b *testing.B) {
 	randomQuickSort(newArray, 0, len(newArray)-1)
 }
 
+func BenchmarkMerge(b *testing.B) {
+	newArray := initArray()
+	_ = mergeSort(newArray)
+}
+
+func BenchmarkCount(b *testing.B) {
+	newArray := initArray()
+	countSort(newArray)
+}
+
 //
-//func BenchmarkMerge(b *testing.B) {
+//func BenchmarkInPlaceMerge(b *testing.B) {
 //	newArray := initArray()
-//	_ = mergeSort(newArray)
+//	inPlaceMergeSort(newArray, 0, len(newArray))
 //}
+
+func inPlaceMergeSort(array []int, left int, right int) {
+	if left+1 >= right {
+		return
+	}
+	mid := (left + right) / 2
+	inPlaceMergeSort(array, left, mid)
+	inPlaceMergeSort(array, mid, right)
+	inPlaceMerge(array, left, mid, right)
+
+}
+
+func inPlaceMerge(array []int, left int, mid int, right int) {
+	// merge arr1=array[left: mid), arr2=array[mid: right) in place
+	// get min value from arr1, arr2, and then put it into sorted array
+	// define sortedIdx, arr1Idx, arr2Idx
+	arr1Idx := left
+	arr2Idx := mid
+	for arr1Idx < right && arr2Idx < right {
+		// pick a small one to i
+		if array[arr1Idx] < array[arr2Idx] {
+			arr1Idx++
+		} else {
+			// insert arr2Idx value into insertIdx
+			tmp := array[arr2Idx]
+			insertIdx := arr2Idx
+			for j := arr2Idx - 1; j >= arr1Idx; j-- {
+				if array[j] > tmp {
+					array[j+1] = array[j]
+					insertIdx = j
+				} else {
+					break
+				}
+			}
+			arr2Idx++
+			array[insertIdx] = tmp
+			arr1Idx++
+		}
+	}
+}
 
 func bubbleSort(unsortedArray []int) {
 	swapped := true
