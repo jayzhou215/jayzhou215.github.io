@@ -11,9 +11,22 @@ var (
 	sortedArray = []int{2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50}
 )
 
+const (
+	length = 1000000
+)
+
 func initArray() []int {
 	var unsortedArray []int
-	length := 100000
+	for i := 0; i < length; i++ {
+		randInt := rand.Int()
+		//randInt := rand.Intn(10000)
+		unsortedArray = append(unsortedArray, randInt)
+	}
+	return unsortedArray
+}
+
+func initRandNArray() []int {
+	var unsortedArray []int
 	for i := 0; i < length; i++ {
 		randInt := rand.Intn(length)
 		unsortedArray = append(unsortedArray, randInt)
@@ -57,6 +70,47 @@ func TestCount(t *testing.T) {
 	unsortedArray := []int{3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48}
 	countSort(unsortedArray)
 	judge(unsortedArray, sortedArray)
+}
+
+func TestRadix(t *testing.T) {
+	unsortedRadixArray := []int{2435, -4224, 138, 5, 132147, 15, 346, -7, 27, 2, 2146, 12314, 19, 50, 48}
+	sortedRadixArray := []int{-4224, -7, 2, 5, 15, 19, 27, 48, 50, 138, 346, 2146, 2435, 12314, 132147}
+	radixSort(unsortedRadixArray)
+	judge(unsortedRadixArray, sortedRadixArray)
+}
+
+func radixSort(array []int) {
+	hasHigher := true
+	level := 10
+	for hasHigher {
+		// to support negative [-9 ~ 9] + 9 => [0 ~ 18]
+		buckets := make([][]int, 19)
+		hasHigher = false
+		// put array value into buckets
+		for i := 0; i < len(array); i++ {
+			val := array[i]
+			digit := val%level/(level/10) + 9
+			if val/level > 1 {
+				hasHigher = true
+			}
+			list := buckets[digit]
+			if list != nil {
+				buckets[digit] = append(buckets[digit], val)
+			} else {
+				buckets[digit] = []int{val}
+			}
+		}
+		// put back value into array
+		idx := 0
+		for _, list := range buckets {
+			for _, val := range list {
+				array[idx] = val
+				idx++
+			}
+		}
+		// inc level
+		level *= 10
+	}
 }
 
 func countSort(array []int) {
@@ -209,20 +263,20 @@ func insertSort(unsortedArray []int) {
 	}
 }
 
-func BenchmarkBubble(b *testing.B) {
-	newArray := initArray()
-	bubbleSort(newArray)
-}
-
-func BenchmarkSelect(b *testing.B) {
-	newArray := initArray()
-	selectSort(newArray)
-}
-
-func BenchmarkInsert(b *testing.B) {
-	newArray := initArray()
-	insertSort(newArray)
-}
+//func BenchmarkBubble(b *testing.B) {
+//	newArray := initArray()
+//	bubbleSort(newArray)
+//}
+//
+//func BenchmarkSelect(b *testing.B) {
+//	newArray := initArray()
+//	selectSort(newArray)
+//}
+//
+//func BenchmarkInsert(b *testing.B) {
+//	newArray := initArray()
+//	insertSort(newArray)
+//}
 
 func BenchmarkQuick(b *testing.B) {
 	newArray := initArray()
@@ -239,10 +293,15 @@ func BenchmarkMerge(b *testing.B) {
 	_ = mergeSort(newArray)
 }
 
-func BenchmarkCount(b *testing.B) {
+func BenchmarkRadix(b *testing.B) {
 	newArray := initArray()
-	countSort(newArray)
+	radixSort(newArray)
 }
+
+//func BenchmarkCount(b *testing.B) {
+//	newArray := initRandNArray()
+//	countSort(newArray)
+//}
 
 //
 //func BenchmarkInPlaceMerge(b *testing.B) {
