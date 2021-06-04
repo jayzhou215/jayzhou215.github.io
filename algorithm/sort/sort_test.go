@@ -16,11 +16,11 @@ const (
 )
 
 func initArray() []int {
-	var unsortedArray []int
+	unsortedArray := make([]int, length)
 	for i := 0; i < length; i++ {
 		randInt := rand.Int()
 		//randInt := rand.Intn(10000)
-		unsortedArray = append(unsortedArray, randInt)
+		unsortedArray[i] = randInt
 	}
 	return unsortedArray
 }
@@ -73,24 +73,23 @@ func TestCount(t *testing.T) {
 }
 
 func TestRadix(t *testing.T) {
-	unsortedRadixArray := []int{2435, -4224, 138, 5, 132147, 15, 346, -7, 27, 2, 2146, 12314, 19, 50, 48}
-	sortedRadixArray := []int{-4224, -7, 2, 5, 15, 19, 27, 48, 50, 138, 346, 2146, 2435, 12314, 132147}
-	radixSort(unsortedRadixArray)
+	unsortedRadixArray := []int{2435, 4224, 138, 5, 132147, 15, 346, 7, 27, 2, 2146, 12314, 19, 50, 48}
+	sortedRadixArray := []int{2, 5, 7, 15, 19, 27, 48, 50, 138, 346, 2146, 2435, 4224, 12314, 132147}
+	radixSort(unsortedRadixArray, 10)
 	judge(unsortedRadixArray, sortedRadixArray)
 }
 
-func radixSort(array []int) {
+func radixSort(array []int, bucketSize int) {
 	hasHigher := true
-	level := 10
+	digitNumber := 0 // 记录当前位数
 	for hasHigher {
-		// to support negative [-9 ~ 9] + 9 => [0 ~ 18]
-		buckets := make([][]int, 19)
+		buckets := make([][]int, bucketSize)
 		hasHigher = false
 		// put array value into buckets
 		for i := 0; i < len(array); i++ {
 			val := array[i]
-			digit := val%level/(level/10) + 9
-			if val/level > 1 {
+			higher, digit := getDigit(val, digitNumber, bucketSize)
+			if higher {
 				hasHigher = true
 			}
 			list := buckets[digit]
@@ -100,6 +99,7 @@ func radixSort(array []int) {
 				buckets[digit] = []int{val}
 			}
 		}
+		digitNumber++
 		// put back value into array
 		idx := 0
 		for _, list := range buckets {
@@ -108,9 +108,19 @@ func radixSort(array []int) {
 				idx++
 			}
 		}
-		// inc level
-		level *= 10
 	}
+}
+
+func getDigit(val int, digitNumber int, bucketSize int) (hasHigher bool, ret int) {
+	for i := 0; i < digitNumber; i++ {
+		val /= bucketSize
+	}
+	if val > bucketSize {
+		hasHigher = true
+	}
+	ret = val % bucketSize
+	return
+
 }
 
 func countSort(array []int) {
@@ -295,13 +305,13 @@ func BenchmarkMerge(b *testing.B) {
 
 func BenchmarkRadix(b *testing.B) {
 	newArray := initArray()
-	radixSort(newArray)
+	radixSort(newArray, 10000)
 }
 
-//func BenchmarkCount(b *testing.B) {
-//	newArray := initRandNArray()
-//	countSort(newArray)
-//}
+func BenchmarkCount(b *testing.B) {
+	newArray := initRandNArray()
+	countSort(newArray)
+}
 
 //
 //func BenchmarkInPlaceMerge(b *testing.B) {

@@ -28,42 +28,34 @@ comments: true
 [code](../algorithm/sort/sort_test.go)
 
 ```sh
-// 10w, bucket size 19, k=32
-BenchmarkQuick-12          	1000000000	         0.00864 ns/op
-BenchmarkRandomQuick
-BenchmarkRandomQuick-12    	1000000000	         0.0109 ns/op
-BenchmarkMerge
-BenchmarkMerge-12          	1000000000	         0.0139 ns/op
-BenchmarkRadix
-BenchmarkRadix-12          	1000000000	         0.0451 ns/op
-
-// 100w, bucket size 19, k=32(int范围内)
+// 10w, bucket size 10000
 BenchmarkQuick
-BenchmarkQuick-12          	1000000000	         0.103 ns/op
+BenchmarkQuick-12          	1000000000	         0.00992 ns/op
 BenchmarkRandomQuick
-BenchmarkRandomQuick-12    	1000000000	         0.103 ns/op
+BenchmarkRandomQuick-12    	1000000000	         0.00981 ns/op
 BenchmarkMerge
-BenchmarkMerge-12          	1000000000	         0.151 ns/op
+BenchmarkMerge-12          	1000000000	         0.0147 ns/op
 BenchmarkRadix
-BenchmarkRadix-12          	1000000000	         0.554 ns/op
+BenchmarkRadix-12          	1000000000	         0.0311 ns/op
+BenchmarkCount
+BenchmarkCount-12          	1000000000	         0.00442 ns/op
 
-// 100w, k=6
+// 10w, bucket size 1000
 BenchmarkQuick
-BenchmarkQuick-12          	1000000000	         0.103 ns/op
+BenchmarkQuick-12          	1000000000	         0.0122 ns/op
 BenchmarkRandomQuick
-BenchmarkRandomQuick-12    	1000000000	         0.105 ns/op
+BenchmarkRandomQuick-12    	1000000000	         0.0104 ns/op
 BenchmarkMerge
-BenchmarkMerge-12          	1000000000	         0.152 ns/op
+BenchmarkMerge-12          	1000000000	         0.0152 ns/op
 BenchmarkRadix
-BenchmarkRadix-12          	1000000000	         0.212 ns/op
+BenchmarkRadix-12          	1000000000	         0.0421 ns/op
 
-// 100w, k=4(最大10000)
-BenchmarkQuick
-BenchmarkQuick-12          	1000000000	         0.125 ns/op
-BenchmarkRandomQuick
-BenchmarkRandomQuick-12    	1000000000	         0.132 ns/op
-BenchmarkMerge
-BenchmarkMerge-12          	1000000000	         0.159 ns/op
+// 100w  bucket size 10000,k=19
 BenchmarkRadix
-BenchmarkRadix-12          	1000000000	         0.139 ns/op
+BenchmarkRadix-12    	1000000000	         0.260 ns/op
+
+// 100w  bucket size 100000,k=19
+BenchmarkQuick-12    	1000000000	         0.0901 ns/op
+BenchmarkRadix-12    	1000000000	         0.369 ns/op
+
 ```
