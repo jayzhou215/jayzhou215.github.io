@@ -79,6 +79,42 @@ func TestRadix(t *testing.T) {
 	judge(unsortedRadixArray, sortedRadixArray)
 }
 
+func TestHeapSort(t *testing.T) {
+	unsortedRadixArray := []int{2435, 4224, 7, 138, 5, 132147, 15, 346, 7, 27, 2, 2146, 12314, 19, 50, 48}
+	sortedRadixArray := []int{2, 5, 7, 7, 15, 19, 27, 48, 50, 138, 346, 2146, 2435, 4224, 12314, 132147}
+	heapSort(unsortedRadixArray)
+	judge(unsortedRadixArray, sortedRadixArray)
+}
+
+func maxHeapify(arr []int, start, end int) {
+	dad := start
+	son := dad*2 + 1
+	for son <= end {
+		if son+1 <= end && arr[son] < arr[son+1] {
+			son++
+		} else if arr[dad] > arr[son] {
+			return
+		} else {
+			swap(arr, dad, son)
+			dad = son
+			son = dad*2 + 1
+		}
+	}
+}
+
+func heapSort(array []int) {
+	n := len(array)
+	for i := n/2 - 1; i >= 0; i-- {
+		// 单次的maxHeapify只是确保父节点大于子节点，结合从n/2-1到0的循环，确保最大值在堆顶
+		maxHeapify(array, i, n-1)
+	}
+	for i := n - 1; i > 0; i-- {
+		// 将最大值移植末尾，其他为未排序数组，并且对未排序重新执行最大堆操作
+		swap(array, 0, i)
+		maxHeapify(array, 0, i-1)
+	}
+}
+
 func radixSort(array []int, bucketSize int) {
 	hasHigher := true
 	digitNumber := 0 // 记录当前位数
@@ -311,6 +347,11 @@ func BenchmarkRadix(b *testing.B) {
 func BenchmarkCount(b *testing.B) {
 	newArray := initRandNArray()
 	countSort(newArray)
+}
+
+func BenchmarkHeap(b *testing.B) {
+	newArray := initArray()
+	heapSort(newArray)
 }
 
 //
