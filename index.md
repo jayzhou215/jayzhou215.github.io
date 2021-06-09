@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Jay's Space
-subtitle: Do not just see see, try it yourself.
+subtitle: Just give myself another reason to move on.
 ---
 
 <ul>
