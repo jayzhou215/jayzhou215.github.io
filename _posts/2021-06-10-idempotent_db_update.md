@@ -15,16 +15,22 @@ table user_account
 |----|---------- |----------------|--------|----------|
 | 1  | Tom       | 1001           | 0      | USD      |
 
-1. let's see a very simple update sql, it may cause problem if someone other just save $1000 to me...
-`UPDATE user_account SET amount = 100 WHERE account_id = 1001`
+#### 1. let's see a very simple update sql, it may cause problem if someone other just save $1000 to me...
+```sql
+UPDATE user_account SET amount = 100 WHERE account_id = 1001
+```
 
-2. if I save the money from ATM, and click the submit button for twice... woo, my account turn to $200.
-`UPDATE user_account SET amount = amount + 100 WHERE account_id = 1001`
+#### 2. If I save the money from ATM, and click the submit button for twice... woo, my account turn to $200.
+```sql
+UPDATE user_account SET amount = amount + 100 WHERE account_id = 1001
+```
 
-3. now quick click may not work if it is just myself. what if the account statement is like `+100, -100, +100, -100`. 
-`UPDATE user_account SET amount = amount + 100 WHERE account_id = 1001 and amount = 0`
+#### 3. now quick click may not work if it is just myself. what if the account statement is like `+100, -100, +100, -100`. 
+```sql
+UPDATE user_account SET amount = amount + 100 WHERE account_id = 1001 and amount = 0
+```
 
-4. let add a new account_record table, and new a record_id whenever Tom open a save page.
+#### 4. let's create a new table account_record, and new a record_id whenever Tom open a save page.
 
 account_record
 
@@ -47,7 +53,7 @@ insert into account_record(`record_id`, `account_id`, `amount`, `origin_amount`)
 UPDATE user_account SET amount = amount -50 WHERE account_id = 1001 and amount = 50 and record_id = 1002
 ```
 
-5. now if the money is transfer from Jay
+#### 5. now if the money is transfer from Jay
 ```sql
 begin transaction; 
 insert into account_record(`record_id`, `account_id`, `amount`, `origin_amount`) VALUES (1004, 1002, -50, 200);
