@@ -14,7 +14,7 @@ comments: true
 We can use a data mirror table to record all the related variables used in the calc.
 
 ## how to make sure the calc result saved correctly
-We need idempotent db insert/update, which I talk a lot in [here](./2021-06-10_idempotent_db_update.md)
+We need idempotent db insert/update, which I talk a lot in [here](2021-06-10-idempotent_db_update.md)
 
 
 ## there are a lot of details which depend on business requirements.
