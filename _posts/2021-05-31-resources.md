@@ -19,3 +19,6 @@ comments: true
 ### Golang talks resource
 1. [2011~2019 talks](https://talks.golang.org/) 
     > I find the resource from here [Go Concurrency patterns code](https://github.com/adityamenon/Google-IO_2012_Go-Concurrency-Patterns) 
+
+### Go DB tools
+[sql builder](https://github.com/huandu/go-sqlbuilder)
