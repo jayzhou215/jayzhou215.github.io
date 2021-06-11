@@ -22,3 +22,7 @@ comments: true
 
 ### Go DB tools
 [sql builder](https://github.com/huandu/go-sqlbuilder)
+
+## developer tools
+1. [draw diagrams, auto save to github](https://app.diagrams.net/)
+2. [pretty code screenshot](https://carbon.now.sh/)
