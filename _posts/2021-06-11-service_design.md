@@ -1,6 +1,6 @@
 ---
 layout: post
-title: design - design a bank system
+title: design - some design ideas
 tags: [architecture]
 readtime: true
 comments: true
@@ -15,7 +15,6 @@ We can use a data mirror table to record all the related variables used in the c
 
 ## how to make sure the calc result saved correctly
 We need idempotent db insert/update, which I talk a lot in [here](2021-06-10-idempotent_db_update.md)
-
 
 ## there are a lot of details which depend on business requirements.
 
