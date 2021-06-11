@@ -10,7 +10,7 @@ comments: true
 
 ![](https://pt-starimg.didistatic.com/static/starimg/img/WZZtElqVEi1623416844350.png)
 
-## if we want to restore a calc, but many context variables may change
+## if we want to restore a calc after a few days, but many context variables may change.
 We can use a data mirror table to record all the related variables used in the calc.
 
 ## how to make sure the calc result saved correctly
