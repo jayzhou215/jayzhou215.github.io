@@ -35,17 +35,18 @@ func twoSum(nums []int, target int) []int {
 	startVal := newNums[start]
 	endVal := newNums[end]
 	fmt.Println(newNums, start, end, target)
-	// 再次遍历，找到索引
-	start = -1
-	end = -1
+	// 再次遍历，找到索引，需考虑 相同值的情况，左右逼近原则
+	start = 0
+	end = len(nums) - 1
 	for i := 0; i < len(nums); i++ {
 		if startVal == nums[i] {
 			start = i
+			break
 		}
+	}
+	for i := len(nums) - 1; i >= 0; i-- {
 		if endVal == nums[i] {
 			end = i
-		}
-		if start > 0 && end > 0 {
 			break
 		}
 	}
