@@ -32,6 +32,7 @@ var testData = []struct {
 	},
 }
 
+// 难点在于需要记录头节点，当前运行时节点，也可以叫尾节点
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) (head *ListNode) {
 	cur := head
 	inc := 0 // 单独标记进位
