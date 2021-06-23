@@ -15,6 +15,7 @@ func getOrigin() []int {
 }
 
 // fast, but ask for a lot of memory
+// 06/23/2021 00:05	Accepted	4 ms	3.9 MB	golang
 func twoSum(nums []int, target int) []int {
 	// 进行了一次copy，需要额外的空间冗余
 	newNums := make([]int, len(nums))
@@ -119,4 +120,60 @@ func TestTwoSum(t *testing.T) {
 			t.Log("success", datum.Input, datum.Target, ret)
 		}
 	}
+}
+
+func TestTwoSum2(t *testing.T) {
+	testData := []struct {
+		Input  []int
+		Target int
+		Dest   []int
+	}{
+		{
+			Input:  getOrigin(),
+			Target: 23,
+			Dest:   []int{0, 4},
+		},
+		{
+			Input:  []int{3, 3},
+			Target: 6,
+			Dest:   []int{0, 1},
+		},
+		{
+			Input:  []int{3, 2, 4},
+			Target: 6,
+			Dest:   []int{1, 2},
+		},
+	}
+	for _, datum := range testData {
+		ret := twoSum2(datum.Input, datum.Target)
+		if !reflect.DeepEqual(datum.Dest, ret) {
+			t.Error("err", datum.Input, datum.Target, ret)
+		} else {
+			t.Log("success", datum.Input, datum.Target, ret)
+		}
+	}
+}
+
+// 06/23/2021 10:57	Accepted	4 ms	6.4 MB	golang
+func twoSum2(nums []int, target int) []int {
+	valIdxMap := make(map[int][]int)
+	for idx, num := range nums {
+		idxList, ok := valIdxMap[num]
+		if !ok {
+			valIdxMap[num] = []int{idx}
+		} else {
+			valIdxMap[num] = append(idxList, idx)
+		}
+	}
+	for idx, num := range nums {
+		idxList, ok := valIdxMap[target-num]
+		if ok {
+			if len(idxList) == 1 && num != target-num {
+				return []int{idx, idxList[0]}
+			} else if len(idxList) == 2 && num == target-num {
+				return []int{idx, idxList[1]}
+			}
+		}
+	}
+	return nil
 }
