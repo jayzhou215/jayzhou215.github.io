@@ -14,10 +14,11 @@ func getOrigin() []int {
 	return []int{1, 9, 3, 7, 22, 18, 34, 33, 55}
 }
 
+// fast, but ask for a lot of memory
 func twoSum(nums []int, target int) []int {
 	// 进行了一次copy，需要额外的空间冗余
-	newNums := make([]int, 0)
-	newNums = append(newNums, nums...)
+	newNums := make([]int, len(nums))
+	copy(newNums, nums)
 	// sort
 	quickSort(newNums, 0, len(newNums)-1)
 	// pick出对应的值
@@ -94,13 +95,28 @@ func TestQuickSort(t *testing.T) {
 }
 
 func TestTwoSum(t *testing.T) {
-	origin := getOrigin()
-	target := 23
-	hope := []int{0, 4}
-	ret := twoSum(origin, target)
-	if !reflect.DeepEqual(hope, ret) {
-		t.Error("err", origin, target, ret)
-	} else {
-		t.Log("success", origin, target, ret)
+	testData := []struct {
+		Input  []int
+		Target int
+		Dest   []int
+	}{
+		{
+			Input:  getOrigin(),
+			Target: 23,
+			Dest:   []int{0, 4},
+		},
+		{
+			Input:  []int{3, 3},
+			Target: 6,
+			Dest:   []int{0, 1},
+		},
+	}
+	for _, datum := range testData {
+		ret := twoSum(datum.Input, datum.Target)
+		if !reflect.DeepEqual(datum.Dest, ret) {
+			t.Error("err", datum.Input, datum.Target, ret)
+		} else {
+			t.Log("success", datum.Input, datum.Target, ret)
+		}
 	}
 }
