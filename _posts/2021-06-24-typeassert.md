@@ -57,7 +57,12 @@ func TypeAssert1() {
 ``` 
 
 ## the reason is 
-We can't (in this case implicitly for a pointer receiver) take the address of the result of an expression (b.(Integer)). We can take the address of a variable. 
+We can't (in this case implicitly for a pointer receiver) take the address of the result of an expression (i.(Integer)). We can take the address of a variable. 
+
+```go
+var c = i.(Integer) 
+sub := c.Sub(b)
+```
 
 ## references
 https://stackoverflow.com/questions/43883502/how-to-invoke-a-method-with-pointer-receiver-after-type-assertion
