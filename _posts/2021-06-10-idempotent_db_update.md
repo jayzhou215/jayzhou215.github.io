@@ -15,7 +15,7 @@ table user_account
 |----|---------- |----------------|--------|----------|
 | 1  | Tom       | 1001           | 0      | USD      |
 
-#### 1. let's see a very simple update sql, it may cause problem if someone other just save $1000 to me...
+#### 1. let's see a very simple update sql, it may cause problem if someone other just save $100 to me...
 ```sql
 UPDATE user_account SET amount = 100 WHERE account_id = 1001
 ```
