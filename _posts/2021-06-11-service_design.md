@@ -16,6 +16,9 @@ We can use a data mirror table to record all the related variables used in the c
 #### how to make sure the calc result saved correctly
 We need idempotent db insert/update, which I talk a lot in [here](2021-06-10-idempotent_db_update.md)
 
+#### retry
+in idempotent db update, it may fail in some case, we need retry to make sure the submission of user can be executed finally. 
+
 #### there are a lot of details which depend on business requirements.
 
 ## reference
