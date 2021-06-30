@@ -25,6 +25,9 @@ in idempotent db update, it may fail in some case, we need retry to make sure th
 #### version/source field in DB
 if there is an inconsistent data struct upgrade or interface upgrade, with version/source field, it can help to make decision to use the data or not.  
 
+more space decrease not only the time complexity but also code complexity.
+
+
 #### there are a lot of details which depend on business requirements.
 
 ## reference
