@@ -26,3 +26,6 @@ comments: true
 ## developer tools
 1. [draw diagrams, auto save to github](https://app.diagrams.net/)
 2. [pretty code screenshot](https://carbon.now.sh/)
+
+## DB articles
+[MySQL innoDB 间隙锁产生的死锁问题](https://sq.163yun.com/blog/article/192340721236127744)
