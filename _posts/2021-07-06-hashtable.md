@@ -88,7 +88,7 @@ For example, we have N = 400 Singapore phone numbers (Singapore phone number has
 
 Instead of using a DAT and use a gigantic array up to size M = 100 Million, we can use the following simple hash function h(v) = v%997.
 
-This way, we map 8 digits phone numbers 6675 2378 and 6874 4483 into up to 3 digits h(6675 2378) = 237 and h(6874 4483) = 336, respectively. Therefore, we only need to prepare array of size M = 997 (or 1000) instead of M = 100 Million.
+This way, we map 8 digits phone numbers 6675 2378 and 6874 4483 into up to 3 digits h(6675 2378) = 237 and h(6874 4483) = 336, respectively. Therefore, we only need to prepare array of size M = 997 (or 1000) instead of M = 100 Million.
 
 ### 3.2 Hash Table Preview
 With hashing, we can now implement the following Table ADT operations using Integer array (instead of Boolean array) as follows:
@@ -96,3 +96,111 @@ With hashing, we can now implement the following Table ADT operations using Inte
 1. Search(v): Check if A[h(v)] != -1 (we use -1 for an empty cell assuming v ≥ 0),
 1. Insert(v): Set A[h(v)] = v (we hash v into h(v) so we need to somehow record key v),
 1. Remove(v): Set A[h(v)] = -1 — to be elaborated further.
+
+### 3.3 Hash Table with Satellite Data
+
+If we have keys that map to satellite data and we want to record the original keys too, we can implement the Hash Table using pair of (Integer, satellite-data-type) array as follows:
+
+Search(v): Return A[h(v)], which is a pair (v, satellite-data), possibly empty,
+Insert(v, satellite-data): Set A[h(v)] = pair(v, satellite-data),
+Remove(v): Set A[h(v)] = (empty pair) — to be elaborated further.
+However, by now you should notice that something is incomplete...
+
+### 3.4 Collision
+A hash function may, and quite likely, map different keys (Integer or not) into the same Integer slot, i.e. a many-to-one mapping instead of one-to-one mapping.
+
+For example, h(6675 2378) = 237 from three slides earlier and if we want to insert another phone number 6675 4372, we will have a problem as h(6675 4372) = 237 too.
+
+This situation is called a collision, i.e. two (or more) keys have the same hash value.
+
+### 3.5 Probability of Collision
+
+The Birthday (von Mises) Paradox asks: 'How many people (number of keys) must be in a room (Hash Table) of size 365 seats (cells) before the probability that some person share a birthday (collision, two keys are hashed to the same cell), ignoring the leap years (i.e. all years have 365 days), becomes > 50 percent (i.e. more likely than not)?'
+
+The answer, which maybe surprising for some of us, is Reveal(after having just 23 people (keys) in the room (the hash table of size 365 cells), it is more likely (> 50% chance) to have a collision than not... We do not need 365/2 ~= 180+ people.).
+
+Let's do some calculation.
+
+### 3.6 The Calculation
+Let Q(n) be the probability of unique birthday for n people in a room.
+Q(n) = 365/365 × 364/365 × 363/365 × ... × (365-n+1)/365,
+i.e. the first person's birthday can be any of the 365 days, the second person's birthday can be any of the 365 days except the first person's birthday, and so on.
+
+Let P(n) be the probability of same birthday (collision) for n people in a room.
+P(n) = 1-Q(n).
+
+We compute that P(23) = 0.507 > 0.5 (50%).
+
+Thus, we only need 23 people (a small amount of keys) in the room (Hash Table) of size 365 seats (cells) for a (more than) 50% chance collision to happen (the birthday of two different people in that room is one of 365 days/slots).
+
+### 3.7 Two Important Issues 
+Issue 1: We have seen a simple hash function like the h(v) = v%997 used in Phone Numbers example that maps large range of Integer keys into a smaller range of Integer keys, but how about non Integer keys? How to do such hashing efficiently?
+
+Issue 2: We have seen that by hashing, or mapping, large range into smaller range, there will very likely be a collision. How to deal with them?
+
+## 4. Hash functions
+
+How to create a good hash function with these desirable properties?
+
+1. Fast to compute, i.e. in O(1),
+2. Uses as minimum slots/Hash Table size M as possible,
+3. Scatter the keys into different base addresses as uniformly as possible ∈ [0..M-1],
+4. Experience as minimum collisions as possible.
+
+### 4.1 Preliminaries
+Suppose we have a hash table of size M where keys are used to identify the satellite-data and a specific hash function is used to compute a hash value.
+
+A hash value/hash code of key v is computed from the key v with the use of a hash function to get an Integer in the range 0 to M-1. This hash value is used as the base/home index/address of the Hash Table entry for the satellite-data.
+
+### 4.2 example of a bad hash function
+Using the Phone Numbers example, if we we define h(v) = floor(v/1 000 000),
+i.e. we select the first two digits a phone number.
+
+h(66 75 2378) = 66
+h(68 74 4483) = 68
+Discuss: What happen when you use that hash function? Hint: See this.
+
+### 4.3 the answer
+hidden
+
+### 4.4 Perfect Hash Function
+
+Before discussing the reality, let's discuss the ideal case: perfect hash functions.
+
+A perfect hash function is a one-to-one mapping between keys and hash values, i.e. no collision at all. It is possible if all keys are known beforehand. For example, a compiler/interpreter search for reserved keywords. However, such cases are rare.
+
+A minimal perfect hash function is achieved when the table size is the same as the number of keywords supplied. This case is even rarer.
+
+If you are interested, you can explore GNU gperf, a freely available perfect hash function generator written in C++ that automatically constructs perfect functions (a C++ program) from a user supplied list of keywords.
+
+### 4.5 Hashing Integer - Best Practice
+People has tried various ways to hash a large range of Integers into a smaller range of Integers as uniformly as possible. In this e-Lecture, we jump directly to one of the best and most popular version: h(v) = v%M, i.e. map v into Hash Table of size M slots. The (%) is a modulo operator that gives the remainder after division. This is clearly fast, i.e. O(1) assuming that v does not exceed natural Integer data type limit.
+
+The Hash Table size M is set to be a reasonably large prime not near a power of 2, about 2+ times larger than the expected number of keys N that will ever be used in the Hash Table. This way, the load factor α = N/M < 0.5 — we shall see later that having low load factor, thereby sacrificing empty spaces, help improving Hash Table performance.
+
+Discuss: What if we set M to be a power of 10 (decimal) or power of 2 (binary)?
+
+### 4.6 Answer
+hidden
+
+### 4.7 Hashing String - Best Practice
+People has also tried various ways to hash Strings into a small range of Integers as uniformly as possible. In this e-Lecture, we jump directly to one of the best and most popular version, shown below:
+
+int hash_function(string v) { // assumption 1: v uses ['A'..'Z'] only
+    int sum = 0;                // assumption 2: v is a short string
+    for (auto &c : v) // for each character c in v
+        sum = ((sum*26)%M + (c-'A'+1))%M; // M is table size
+    return sum;
+}
+Discussion: In real life class, discuss the components of the hash function above, e.g. why loop through all characters?, will that be slower than O(1)?, why multiply with 26?, what if the string v uses more than just UPPERCASE chars?, etc
+
+### 4.8 Answer
+hidden
+
+## 5 Collision Resolution
+
+There are two major ideas: Open Addressing versus Closed Addressing method.
+
+In Open Addressing, all hashed keys are located in a single array. The hash code of a key gives its base address. Collision is resolved by checking/probing multiple alternative addresses (hence the name open) in the table based on a certain rule.
+
+In Closed Addressing, the Hash Table looks like an Adjacency List (a graph data structure). The hash code of a key gives its fixed/closed base address. Collision is resolved by appending the collided keys inside a (Doubly) Linked List identified by the base address.

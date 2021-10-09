@@ -29,3 +29,9 @@ comments: true
 
 ## DB articles
 [MySQL innoDB 间隙锁产生的死锁问题](https://sq.163yun.com/blog/article/192340721236127744)
+
+## books
+[dragon book](https://suif.stanford.edu/dragonbook/)
+
+## gradiance online study platform based on books
+https://www.newgradiance.com/services/servlet/COTC
