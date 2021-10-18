@@ -2,6 +2,7 @@ package leecode
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -10,67 +11,44 @@ type ListNode struct {
 	Next *ListNode
 }
 
-var testData = []struct {
-	L1   int
-	L2   int
-	Dest int
-}{
-	{
-		L1:   342,
-		L2:   465,
-		Dest: 807,
-	},
-	{
-		L1:   0,
-		L2:   0,
-		Dest: 0,
-	},
-	{
-		L1:   999999,
-		L2:   9999,
-		Dest: 1009998,
-	},
-}
-
 // 难点在于需要记录头节点，当前运行时节点，也可以叫尾节点
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) (head *ListNode) {
-	cur := head
-	inc := 0 // 单独标记进位
-	for {
-		add := inc
-		if l1 != nil {
-			add += l1.Val
-			l1 = l1.Next
+	return handleNext(l1, l2, 0)
+}
+func handleNext(l1 *ListNode, l2 *ListNode, plus int) *ListNode {
+	if l1 == nil && l2 == nil {
+		if plus == 0 {
+			return nil
 		}
-		if l2 != nil {
-			add += l2.Val
-			l2 = l2.Next
-		}
-		if add >= 10 {
-			inc = 1
-			add -= 10 // 修正 add结果
-		} else {
-			inc = 0 // 重置进位
-		}
-		// 处理头节点
-		if cur == nil {
-			cur = &ListNode{Val: add}
-			head = cur
-		} else {
-			// 处理后续节点
-			cur.Next = &ListNode{Val: add}
-			cur = cur.Next
-		}
-		// 退出条件，考虑进位
-		if l1 == nil && l2 == nil && inc == 0 {
-			break
-		}
+		return &ListNode{Val: 1}
 	}
-	return
+	l1Val := 0
+	l2Val := 0
+	var l1Next *ListNode
+	var l2Next *ListNode
+	if l1 != nil {
+		l1Val = l1.Val
+		l1Next = l1.Next
+	}
+	if l2 != nil {
+		l2Val = l2.Val
+		l2Next = l2.Next
+	}
+	var node ListNode
+	sum := l1Val + l2Val + plus
+	if sum >= 10 {
+		node.Val = sum - 10
+		plus = 1
+	} else {
+		node.Val = sum
+		plus = 0
+	}
+	node.Next = handleNext(l1Next, l2Next, plus)
+	return &node
 }
 
 func TestGetListNode(t *testing.T) {
-	node := getListNode(345)
+	node := getListNode([]int{3, 4, 5})
 	for node != nil {
 		fmt.Println(node.Val)
 		node = node.Next
@@ -78,9 +56,10 @@ func TestGetListNode(t *testing.T) {
 }
 
 func TestGetNumFromListNode(t *testing.T) {
-	node := getListNode(345)
+	origin := []int{7, 0, 8, 9}
+	node := getListNode(origin)
 	ret := getNumFromListNode(node)
-	if ret == 345 {
+	if reflect.DeepEqual(ret, origin) {
 		t.Log("ok")
 	} else {
 		t.Error(ret)
@@ -90,12 +69,40 @@ func TestGetNumFromListNode(t *testing.T) {
 //Runtime: 4 ms, faster than 98.55% of Go online submissions for Add Two Numbers.
 //Memory Usage: 4.8 MB, less than 94.15% of Go online submissions for Add Two Numbers.
 func TestAddTwoNumbers(t *testing.T) {
+
+	var testData = []struct {
+		L1   []int
+		L2   []int
+		Dest []int
+	}{
+		{
+			L1:   []int{3, 4, 2},
+			L2:   []int{4, 6, 5},
+			Dest: []int{7, 0, 8},
+		},
+		{
+			L1:   []int{3, 4, 2},
+			L2:   []int{4, 6, 5, 9},
+			Dest: []int{7, 0, 8, 9},
+		},
+		{
+			L1:   []int{0},
+			L2:   []int{0},
+			Dest: []int{0},
+		},
+		{
+			L1:   []int{9, 9, 9, 9, 9, 9},
+			L2:   []int{9, 9, 9, 9},
+			Dest: []int{8, 9, 9, 9, 0, 0, 1},
+		},
+	}
+
 	for _, datum := range testData {
 		l1 := getListNode(datum.L1)
 		l2 := getListNode(datum.L2)
 		ret := addTwoNumbers(l1, l2)
 		numRet := getNumFromListNode(ret)
-		if numRet == datum.Dest {
+		if reflect.DeepEqual(numRet, datum.Dest) {
 			t.Log(datum.Dest, "ok")
 		} else {
 			t.Error(datum.Dest, numRet)
@@ -103,33 +110,20 @@ func TestAddTwoNumbers(t *testing.T) {
 	}
 }
 
-func getNumFromListNode(node *ListNode) (ret int) {
-	multi := 1
+func getNumFromListNode(node *ListNode) (ret []int) {
 	for node != nil {
-		ret += node.Val * multi
+		ret = append(ret, node.Val)
 		node = node.Next
-		multi *= 10
 	}
 	return
 }
 
-func getListNode(val int) (head *ListNode) {
-	// 将数字342从低位到高位放到list中，最终head存2，依次存 4, 3
-	cur := head
-	for {
-		mod := val % 10
-		val = val / 10
-		if cur == nil {
-			head = &ListNode{Val: mod}
-			cur = head
-		} else {
-			tmp := &ListNode{Val: mod}
-			cur.Next = tmp
-			cur = tmp
-		}
-		if val == 0 {
-			break
-		}
+func getListNode(val []int) (head *ListNode) {
+	// val [3,4,5], 数字543的逆序存放，最终 3->4->5
+	head = &ListNode{}
+	head.Val = val[0]
+	if len(val) > 1 {
+		head.Next = getListNode(val[1:])
 	}
 	return
 }
