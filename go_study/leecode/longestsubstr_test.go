@@ -57,14 +57,17 @@ func lengthOfLongestSubstring(str string) int {
 		curByte := byteList[i]
 		lastCharIdx, ok := chars[curByte]
 		if !ok {
+			// 不存在，max比较 & 记录当前字符
 			longestSubStringLength = max(longestSubStringLength, i-start+1)
 			chars[curByte] = i
 		} else {
-			// 已经存在，需要重置start到重复字符串索引的后一位
+			// 已经存在，需要清除start到重复字符串索引的后一位
 			for j := start; j <= lastCharIdx; j++ {
 				delete(chars, byteList[j])
 			}
+			// 记录新的起点
 			start = lastCharIdx + 1
+			// 插入该字符
 			chars[curByte] = i
 		}
 	}
