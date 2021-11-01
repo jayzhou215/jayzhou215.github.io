@@ -28,6 +28,9 @@ if there is an inconsistent data struct upgrade or interface upgrade, with versi
 more space decrease not only the time complexity but also code complexity.
 
 
+## db status vs hot status
+which means the status saved in db do not must keep consist with the status returned, which may with some calc. 
+
 #### the statement
 include statement with outside and inside
 
